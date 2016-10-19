@@ -4,13 +4,17 @@
 
 ```
 
+[GDB] Resources.gdb (Global, available to all county folders)
+|-- Snap
+|-- Stream
+
+[DIR] COUNTY
+|
 |--[DIR] COUNTY_P6_Temp (Folder for storing intermediate geodatabase files)
 |    |--[GDB] COUNTY_1m.gdb  (Geodatabase for storing intermediate files related to 1m rasters)
 |    |--[GDB] COUNTY_10m.gdb (Geodatabase for storing intermediate files related to 10m rasters)
 |
 |--[GDB] COUNTY_P6_Resources (Geodatabase for storing model resources)
-|    |-- Snap
-|    |-- Stream
 |    |-- TC      (Worldview classes 41, 42, 43, 61, all 100 classes except for 101, 121, 122)
 |    |-- LV      (Worldview classes 71, 81, 82, 171, 181, 182)
 |    |-- Barren  (Worldview classes 31, 131)
