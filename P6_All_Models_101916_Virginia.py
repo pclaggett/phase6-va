@@ -147,7 +147,8 @@ if arcpy.Exists(str(CoName) + "_3xImp"):
 else:
     start_time = time.time()
     rasLocation = os.path.join(str(CoGDB))
-    inRasters = Raster(IR),Raster(INRmask), Raster(TCI)  # Just INR in VA
+    #inRasters = Raster(IR),Raster(INRmask), Raster(TCI)  # Just INR in VA
+    inRasters = Raster(INRmask)  # Just INR in VA
     arcpy.MosaicToNewRaster_management(inRasters,rasLocation,str(CoName) + "_3xImp","", "4_BIT", "1", "1", "LAST", "FIRST")
     arcpy.Delete_management("in_memory")
     print("--- TURF #1 Impervious mosaic Complete %s seconds ---" % (time.time() - start_time))
@@ -230,18 +231,18 @@ if arcpy.Exists(PARCELS):
     # TURF 4d: Mosaic available overlays to create Turf Mask with parcels
     start_time = time.time()
     inrasList = [ ]
-    if arcpy.Exists(DEV113):
-        inrasList.append(DEV113)
-    if arcpy.Exists(RTmask):
-        inrasList.append(RTmask)
+    # if arcpy.Exists(DEV113):
+    #    inrasList.append(DEV113)
+    #if arcpy.Exists(RTmask):
+    #    inrasList.append(RTmask)
     if arcpy.Exists(ROW):
         inrasList.append(ROW)
     if arcpy.Exists(INST):
         inrasList.append(INST)
-    if arcpy.Exists(T_LANDUSE):
-        inrasList.append(T_LANDUSE)
-    if arcpy.Exists(TURFparcels):
-        inrasList.append(TURFparcels)
+    #if arcpy.Exists(T_LANDUSE):
+    #    inrasList.append(T_LANDUSE)
+    #if arcpy.Exists(TURFparcels):
+    #    inrasList.append(TURFparcels)
     # print (inrasList)
     rasLocation = os.path.join(str(CoGDB))
     inrasList = str(";".join(inrasList)) #delimit by ";"
