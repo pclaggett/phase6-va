@@ -11,18 +11,18 @@
 |--[GDB] COUNTY_P6_Resources (Geodatabase for storing model resources)
 |    |-- Snap
 |    |-- Stream
-|    |-- Land use classes (e.g. MOBeach, DEV18/27/37/113, FedPark, TurfNT...)
+|    |-- TC      (Worldview classes 41, 42, 43, 61, all 100 classes except for 101, 121, 122)
+|    |-- LV      (Worldview classes 71, 81, 82, 171, 181, 182)
+|    |-- Barren  (Worldview classes 31, 131)
+|    |-- Other land use classes (e.g. MOBeach, DEV18/27/37/113, FedPark, TurfNT...)
 |
 |--[DIR] COUNTY_P6_Outputs (Folder for storing final geodatabase files)
 |    |--[GDB] COUNTY_Final_1m.gdb  (Geodatabase for storing final 1m rasters)
 |    |    |-- IR_1m
 |    |    |-- INR_1m
 |    |    |-- TCoI_1m
-|    |    |-- TC_1m    (Worldview classes 41, 42, 43, 61, all 100 classes except for 101, 121, 122)
-|    |    |-- HERB_1m  (Worldview classes 31, 71, 81, 82, 131, 171, 181, 182)
 |    |    |-- PAS_1m   (Worldview class 81)
 |    |    |-- CRO_1m   (Worldview class 82)
-|    |    |-- TG_1m    (Worldview class 71, 72)
 |    |    
 |    |--[GDB] COUNTY_Final_10m.gdb (Geodatabase for storing final files 10m rasters)
 |    |--[DIR] COUNTY_Final_Tifs  (Directory for storing final 10m tifs)
@@ -45,11 +45,13 @@ Snap raster        --> COUNTY_Final_1m.gdb/IR_1m
 ## TURF 4a: Check projection of parcel data and reproject if needed
 -- OMITTED -- ## TURF 4b: Create Turf Parcels
 ## TURF 4c: Create Fractional Turf Parcels
-## TURF 4d: Mosaic available overlays to create Turf Mask with parcels (including only RoW and INST)
+## TURF 4d: Mosaic available overlays to create Turf Mask with parcels
+   ++ ADJUSTMENT ++  (include only RoW and INST)
 ## TURF 4e: Mosaic available overlays to create FTG Mask with parcels
 ## TURF 5a: Mosaic available overlays to create Turf Mask without parcels
 ## TURF 5b: Mosaic available overlays to create FTG Mask without parcels
 ## TURF 6: Extract Herbaceous within Turf Mask and Reclass
+++ ADDED STEP ++ ## TURF 6b: Mosaic this output with Worldview class 71 to create VA TG_1m
 ## FRAC 1: Extract Herbaceous within FTG Mask and Reclass
 ## FRAC 2: Extract Herbaceous within FINR Mask and Reclass
 
