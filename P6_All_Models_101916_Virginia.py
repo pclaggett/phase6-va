@@ -269,16 +269,16 @@ else:
     # TURF 5a: Mosaic available overlays to create Turf Mask without parcels
     start_time = time.time()
     inrasList = [ ]
-    if arcpy.Exists(DEV113):
-        inrasList.append(DEV113)
-    if arcpy.Exists(RTmask):
-        inrasList.append(RTmask)
+    #if arcpy.Exists(DEV113):
+    #    inrasList.append(DEV113)
+    #if arcpy.Exists(RTmask):
+    #    inrasList.append(RTmask)
     if arcpy.Exists(ROW):
         inrasList.append(ROW)
     if arcpy.Exists(INST):
         inrasList.append(INST)
-    if arcpy.Exists(T_LANDUSE):
-        inrasList.append(T_LANDUSE)
+    #if arcpy.Exists(T_LANDUSE):
+    #    inrasList.append(T_LANDUSE)
     # print (inrasList)
     rasLocation = os.path.join(str(CoGDB))
     inrasList = str(";".join(inrasList)) #delimit by ";"
@@ -305,6 +305,7 @@ start_time = time.time()
 outExtractByMask = ExtractByMask(str(CoName) + "_Herb", str(CoName) + "_TGmask")
 outExtractByMask.save(str(CoGDB) + str(CoName) + "_TURFtemp",)
 outSetNull = SetNull(str(CoName) + "_TURFtemp", "13", "VALUE = 0")
+# MOSAIC WITH WORLDVIEW CLASS 71
 outSetNull.save(str(LuGDB) + str(CoName) + "_TG_1m")
 print("--- TURF #6 Turf Grass Complete %s seconds ---" % (time.time() - start_time))
 
