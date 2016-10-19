@@ -21,6 +21,9 @@
 |    |    |-- IR_1m
 |    |    |-- INR_1m
 |    |    |-- TCoI_1m
+|    |    |-- WLT_1m
+|    |    |-- WLF_1m
+|    |    |-- WLO_1m
 |    |    |-- PAS_1m   (Worldview class 81)
 |    |    |-- CRO_1m   (Worldview class 82)
 |    |    
@@ -46,7 +49,7 @@ Snap raster        --> COUNTY_Final_1m.gdb/IR_1m
 -- OMITTED -- ## TURF 4b: Create Turf Parcels
 ## TURF 4c: Create Fractional Turf Parcels
 ## TURF 4d: Mosaic available overlays to create Turf Mask with parcels
-   ++ ADJUSTMENT ++  (include only RoW and INST)
+   ++ ADJUSTMENT ++  Include only RoW and INST
 ## TURF 4e: Mosaic available overlays to create FTG Mask with parcels
 ## TURF 5a: Mosaic available overlays to create Turf Mask without parcels
 ## TURF 5b: Mosaic available overlays to create FTG Mask without parcels
@@ -76,6 +79,7 @@ Snap raster        --> COUNTY_Final_1m.gdb/IR_1m
 
 ######### AGGREGATION MODEL ##########
 ## Final 2: Reclass Input Rasters to Appropriate Mosaic Hierarchical Values.
+   ++ ADJUSTMENT ++ Remove CDL and AG rasters and add Cropland and Pasture
 ## Final 3: Mosaic All 1m Rasters
 ## Final 4: Split Mosaic and Reclass Land Uses to [1,0]
 
