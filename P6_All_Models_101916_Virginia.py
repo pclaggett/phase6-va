@@ -177,11 +177,12 @@ print("FTG_LU", arcpy.Exists(FTG_LU))
 print("INST", arcpy.Exists(INST))
 print("PARCELS", arcpy.Exists(PARCELS))
 print("ROW", arcpy.Exists(ROW))
-print ("TREES", arcpy.Exists(TREES))
+print("TREES", arcpy.Exists(TREES))
 
 #---------------------------TURF & FRACTIONAL MODELS--------------------------------
 ALL_start_time = time.time()
 start_time = time.time()
+"""SKIP FOR NOW
 arcpy.Delete_management(CoName + "Parcel_IMP")
 arcpy.Delete_management(CoName + "Parcel_IMP2")
 arcpy.Delete_management(CoName + "_INRmask")
@@ -202,9 +203,7 @@ arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_TCI_1m"))
 arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_FTG_1m"))
 arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_FINR_1m"))
 print("--- Removal of TURF & FRAC Duplicate Files Complete %s seconds ---" % (time.time() - start_time))
-
-sys.exit("stop to see if these are actually deleting")
-
+"""
 # TURF 1: Mosaic All Non-road Impervious Surfaces
 ## SHOULD ONLY BE INR
 """
@@ -251,6 +250,7 @@ print("--- TURF #3 Cost Distance Complete %s seconds ---" % (time.time() - start
 """
 
 # TURF 4: Create Parcel-based Turf and Fractional Turf Masks
+"""SKIP FOR NOW
 if arcpy.Exists(PARCELS):
     # Step 4a: Check projection of parcel data and reproject if needed
     start_time = time.time()
@@ -268,9 +268,9 @@ if arcpy.Exists(PARCELS):
         PARCELS = os.path.join(CountyDataGDB, CoName + "_ParcelsAlb")
         print("Parcel data reprojected to Albers")
     print("--- TURF #4a Parcel Preprocessing Complete %s seconds ---" % (time.time() - start_time))
-
+"""
+""" SKIP ALWAYS
     ## GOING WITH WORLDVIEW TURF
-    """
     # TURF 4b: Create Turf Parcels
     start_time = time.time()
     arcpy.env.overwriteoutput = True
@@ -290,7 +290,7 @@ if arcpy.Exists(PARCELS):
     arcpy.Delete_management("in_memory")
     print("--- TURF #4b Turf Parcels Complete %s seconds ---" % (time.time() - start_time))
     """
-
+"""SKIP FOR NOW
     # TURF 4c: Create Fractional Turf Parcels
     arcpy.Select_analysis(PARCELS, CoName + "_Parcels_FTGtemp", 'ACRES2 > 10')
     Zstat = ZonalStatisticsAsTable(CoName + "_Parcels_FTGtemp", "UNIQUEID", INR, "Parcel_IMP2", "DATA", "SUM")
@@ -376,24 +376,35 @@ else:
     arcpy.MosaicToNewRaster_management(inrasList,rasLocation,CoName + "_FTGmask","", "4_BIT", "1", "1", "LAST", "FIRST")
     arcpy.Delete_management("in_memory")
     print("--- TURF #5b Fractional Turf Mask without Parcels Complete %s seconds ---" % (time.time() - start_time))
-
+"""
+"""SKIP FOR NOW
 # TURF 6: Extract Herbaceous within Turf Mask and Reclass
 start_time = time.time()
 outExtractByMask = ExtractByMask(CoName + "_Herb", CoName + "_TGmask")
 outExtractByMask.save(CoName + "_TURFtemp",)
-outSetNull = SetNull(CoName + "_TURFtemp", "13", "VALUE = 0")
+outSetNull = SetNull(CoName + "_TURFtemp", "13", "VALUE = 0") # If the value == 0, make it null, if the value is != 0, make it 13
 outSetNull.save(CoName + "_TG_1m_no_worldview_turf")
+"""
 
 # TURF 6b: MOSAIC WITH WORLDVIEW CLASS 71
-rasLocation = Output1mGB
-inrasList = []
-inrasList.append(CoName + "_TG_1m_no_worldview_turf")
-inrasList.append()
-inrasList = str(";".join(inrasList))
-arcpy.MosaicToNewRaster_management(inrasList)
 
-outSetNull.save(os.path.join(Output1mGDB, CoName + "_TG_1m"))
+#worldview_turf = Con(CoName + "_LaCoTC", 13, 0, "Value = 71")
+#worldview_turf.save(CoName + "_WV_TURFtemp")
+#worldview_turf_nulled = SetNull(CoName + "_WV_TURFtemp", "13", "VALUE = 0")
+#worldview_turf_nulled.save(CoName + "_WV_TURF")
+worldview_reclass = Reclassify(CoName + "_LaCoTC", "Value", RemapValue([[71,13]]), "NODATA")
+worldview_reclass.save(CoName + "_WV_TURF")
+
+rasLocation = Output1mGDB
+inrasList = []
+inrasList.append(Raster(CoName + "_TG_1m_no_worldview_turf"))
+inrasList.append(Raster(CoName + "_WV_TURF"))
+inrasList = str(";".join(inrasList))
+arcpy.MosaicToNewRaster_management(inrasList, rasLocation, CoName + "_TG_1m", "4_BIT", "1", "1", "LAST", "FIRST")
+
+#outSetNull.save(os.path.join(Output1mGDB, CoName + "_TG_1m"))
 print("--- TURF #6 Turf Grass Complete %s seconds ---" % (time.time() - start_time))
+sys.exit("look at worldview turf")
 
 # FRAC 1: Extract Herbaceous within FTG Mask and Reclass
 start_time = time.time()
