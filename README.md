@@ -16,11 +16,11 @@
 |    |-- Barren  (Worldview classes 31, 131)
 |    |-- Other land use classes (e.g. MOBeach, DEV18/27/37/113, FedPark, TurfNT...)
 |
-|--[DIR] Temp (Folder for storing intermediate geodatabase files)
+|--[DIR] Temp (Directory for storing intermediate geodatabase files)
 |    |--[GDB] TEMP_1m.gdb  (Geodatabase for storing intermediate files related to 1m rasters)
 |    |--[GDB] TEMP_10m.gdb (Geodatabase for storing intermediate files related to 10m rasters)
 |
-|--[DIR] Outputs (Folder for storing final geodatabase files)
+|--[DIR] Outputs (Directory for storing final geodatabase files)
 |    |--[GDB] Final_1m.gdb  (Geodatabase for storing final 1m rasters. All of the following exist at the start of the model, except possible the wetlands rasters)
 |    |    |-- IR_1m
 |    |    |-- INR_1m

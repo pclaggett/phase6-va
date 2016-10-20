@@ -48,7 +48,8 @@ LuGDB = os.path.join(str(LUgdbDirectory),str(CoName) + "_1mLU.gdb/")
 #arcpy.env.workspace = CoGDB
 
 #### Environments
-arcpy.env.workspace = Temp1mGBD
+arcpy.env.workspace = CountyDataGDB
+arcpy.env.scratchWorkspace = Temp1mGBD
 arcpy.env.overwriteOutput = True
 arcpy.env.parallelProcessingFactor = "100%"
 print(os.path.join(Output1mGDB, CoName, "_IR_1m"))
@@ -203,12 +204,11 @@ arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_FINR_1m"))
 print("--- Removal of TURF & FRAC Duplicate Files Complete %s seconds ---" % (time.time() - start_time))
 
 # TURF 1: Mosaic All Non-road Impervious Surfaces
-## SHOULD ALREADY BE COMPLETED
+## SHOULD ONLY BE INR
 """
 outCon = Con(Raster(INR)==2,1)
 outCon.save(CoName + "_INRmask")
 INRmask = os.path.join(Output1mGDB, CoName + "_INRmask")
-
 
 if arcpy.Exists(CoName + "_3xImp"):
     print("Impervious Layer Exists")
@@ -223,12 +223,12 @@ else:
 """
 
 # TURF 2: Create Herbaceous Layer
-if arcpy.Exists(str(CoName) + "_Herb"):
+if arcpy.Exists(CoName + "_Herb"):
     print("Herbaceous Layer Exists")
-    HERB = os.path.join(str(CoGDB) + str(CoName) + "_Herb")
+    HERB = os.path.join(CountyDataGDB, CoName + "_Herb")
 else:
     start_time = time.time()
-    rasLocation = os.path.join(str(CoGDB))
+    rasLocation = CountyDataGDB
     inRasters = Raster(BAR),Raster(LV)
     arcpy.MosaicToNewRaster_management(inRasters,rasLocation,str(CoName) + "_Herb","", "4_BIT", "1", "1", "LAST", "FIRST")
     HERB = os.path.join(str(CoGDB) + str(CoName) + "_Herb")
