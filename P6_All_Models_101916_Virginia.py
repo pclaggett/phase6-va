@@ -96,64 +96,6 @@ TG = os.path.join(Output1mGDB, CoName + "_TG_1m")
 PAS = os.path.join(Output1mGDB, CoName + "_PAS_1m") # Worldview class 81
 CRP = os.path.join(Output1mGDB, CoName + "_CRP_1m") # Worldview class 82
 
-"""
-TempDirectory = "C:/A__P6_Analyst/A__P6_Temp/"  #create this
-if not arcpy.Exists(str(TempDirectory) + CoName + "_1m.gdb"):
-    arcpy.CreateFileGDB_management(str(TempDirectory), CoName + "_1m.gdb")
-if not arcpy.Exists(str(TempDirectory) + CoName + "_10m.gdb"):
-    arcpy.CreateFileGDB_management(str(TempDirectory), CoName + "_10m.gdb")
-TempGDB = os.path.join(str(TempDirectory) + CoName + "_1m.gdb/")
-Temp10GDB = os.path.join(str(TempDirectory) + CoName + "_10m.gdb/")
-arcpy.env.scratchWorkspace = TempGDB
-if not arcpy.Exists("C:/A__P6_Analyst/A__P6_10mLU"):
-    arcpy.CreateFolder_management("C:/A__P6_Analyst","A__P6_10mLU")
-DirPath = "C:/A__P6_Analyst/A__P6_10mLU/"
-if not arcpy.Exists(str(DirPath) + CoName + "_10m.gdb"):
-    arcpy.CreateFileGDB_management(str(DirPath), CoName + "_10m.gdb")
-FinalGDB = os.path.join(str(DirPath) + CoName + "_10m.gdb/")
-if not arcpy.Exists("C:/A__P6_Analyst/" + CoName + "_FINAL"):
-    arcpy.CreateFolder_management("C:/A__P6_Analyst", CoName + "_FINAL")
-FinalDirectory = "C:/A__P6_Analyst/" + CoName + "_FINAL/"
-
-# Local variables:
-BAR = os.path.join(str(CoGDB) + CoName + "_Barren")
-BEACH = os.path.join(str(CoGDB) + str(CoGDB),CoName + "_MOBeach")
-DEV113 = os.path.join(str(CoGDB) + CoName + "_DEV113")
-DEV37 = os.path.join(str(CoGDB) + CoName + "_DEV37")
-DEV27 = os.path.join(str(CoGDB) + CoName + "_DEV27")
-DEV18 = os.path.join(str(CoGDB) + CoName + "_DEV18")
-FEDS = os.path.join(str(CoGDB) + CoName + "_FedPark")
-FINR_LU = os.path.join(str(CoGDB) + CoName + "_FracINR")
-FTG_LU = os.path.join(str(CoGDB) + CoName + "_FracTG")
-INST = os.path.join(str(CoGDB) + CoName + "_TurfNT")
-T_LANDUSE = os.path.join(str(CoGDB) + CoName + "_TgLU")
-M_LANDUSE = os.path.join(str(CoGDB) + CoName + "_MoLU")
-LV = os.path.join(str(CoGDB) + CoName + "_LV")
-MINE = os.path.join(str(CoGDB) + CoName + "_ExtLFill")
-PARCELS = os.path.join(str(CoGDB) + CoName + "_Parcels")
-ROW = os.path.join(str(CoGDB) + CoName + "_RoW")
-SS = os.path.join(str(CoGDB) + str(CoGDB),CoName + "_SS")
-TC = os.path.join(str(CoGDB) + CoName + "_TC") # Trees over pervious surfaces = 41 + 42 + 61 + all classes over 100 (except 101, 121, 122)
-TREES = os.path.join(str(CoGDB) + CoName + "_MOTrees")
-
-# 1 meter LU Rasters - Listed in Hierarchial Order:
-IR = os.path.join(str(LuGDB) + CoName + "_IR_1m") # exists already
-INR = os.path.join(str(LuGDB) + CoName + "_INR_1m") # exists already
-TCI = os.path.join(str(LuGDB) + CoName + "_TCoI_1m") # exists already
-WAT = os.path.join(str(LuGDB) + CoName + "_WAT_1m")
-WLT = os.path.join(str(LuGDB) + CoName + "_WLT_1m")
-WLF = os.path.join(str(LuGDB) + CoName + "_WLF_1m")
-WLO = os.path.join(str(LuGDB) + CoName + "_WLO_1m")
-FOR = os.path.join(str(LuGDB) + CoName + "_FOR_1m")
-TCT = os.path.join(str(LuGDB) + CoName + "_TCT_1m")
-MO = os.path.join(str(LuGDB) + CoName + "_MO_1m")
-FTG = os.path.join(str(LuGDB) + CoName + "_FTG_1m")
-FINR = os.path.join(str(LuGDB) + CoName + "_FINR_1m")
-TG = os.path.join(str(LuGDB) + CoName + "_TG_1m")
-PAS = os.path.join(str(LuGDB) + CoName + "_PAS_1m") # class 81
-CRP = os.path.join(str(LuGDB) + CoName + "_CRP_1m") # class 82
-"""
-
 print ("IR", arcpy.Exists(IR))
 print ("INR", arcpy.Exists(INR))
 print ("TCI", arcpy.Exists(TCI))
@@ -404,13 +346,13 @@ outExtractByMask.save(CoName + "_FTGtemp",)
 outSetNull = SetNull(CoName + "_FTGtemp", "11", "VALUE = 0")
 outSetNull.save(os.path.join(Output1mGDB, CoName + "_FTG_1m"))
 print("--- FRAC #1 Fractional Turf Grass Complete %s seconds ---" % (time.time() - start_time))
-"""
+
 
 # FRAC 2: Extract Herbaceous within FINR Mask and Reclass
 if arcpy.Exists(FINR_LU):
     try:
-        arcpy.CalculateStatistics_management(FINR)
-        outExtractByMask = ExtractByMask(HERB, FINR)
+        arcpy.CalculateStatistics_management(FINR_LU)
+        outExtractByMask = ExtractByMask(HERB, FINR_LU)
         outExtractByMask.save(os.path.join(Output1mGDB, CoName + "_FINR_1m"))
         #outExtractByMask.save(CoName + "_FINRtemp",)
         #outSetNull = SetNull(CoName + "_FINRtemp", "12", "VALUE = 0") # If the value == 0, make it null, if the value is != 0, make it 12
@@ -440,7 +382,7 @@ arcpy.Delete_management(CoName + "_FINRtemp")
 #arcpy.Delete_management(CoName + "_TG_1m_no_worldview_turf")
 #arcpy.Delete_management(CoName + "_WV_TURF")
 print("--- TURF & FRAC Clean Up Complete %s seconds ---" % (time.time() - start_time))
-
+"""
 #--------------------------------FOREST MODEL----------------------------------------
 start_time = time.time()
 arcpy.Delete_management(CoName + "_RLTCP")
@@ -466,7 +408,7 @@ arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_MO_1m"))
 # FOR 1: Identify Rural Core Areas of Tree Canopy over Pervious Surfaces
 start_time = time.time()
 RLTCP = Int(SetNull(Con(IsNull(DEV113),1) * TC <=0,Con(IsNull(DEV113),1) * TC))
-RLTCP.save("RLTCP")
+RLTCP.save(CoName + "_RLTCP")
 arcpy.CopyRaster_management("RLTCP", CoName + "_RLTCP","","0","0","","","4_BIT","","","","")
 arcpy.Delete_management("RLTCP")
 arcpy.Delete_management("in_memory")
@@ -475,7 +417,7 @@ print("--- FOR #1 RLTCP Creation Complete %s seconds ---" % (time.time() - start
 # FOR 2: Define interface between Rural Core Areas and Edges of Developed Areas
 start_time = time.time()
 EDGE = Int(SetNull(Con(IsNull(DEV27),1,0) * TC <=0,Con(IsNull(DEV27),1,0) * TC))
-EDGE.save("EDGE")
+EDGE.save(CoName + "_EDGE")
 arcpy.CopyRaster_management("EDGE", CoName + "_EDGE","","0","0","","","4_BIT","","","","")
 arcpy.Delete_management("EDGE")
 arcpy.Delete_management("in_memory")
