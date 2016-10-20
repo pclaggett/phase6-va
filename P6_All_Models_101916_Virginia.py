@@ -206,7 +206,7 @@ print("--- Removal of TURF & FRAC Duplicate Files Complete %s seconds ---" % (ti
 """
 # TURF 1: Mosaic All Non-road Impervious Surfaces
 ## SHOULD ONLY BE INR
-"""
+"""SKIP ALWAYS
 outCon = Con(Raster(INR)==2,1)
 outCon.save(CoName + "_INRmask")
 INRmask = os.path.join(Output1mGDB, CoName + "_INRmask")
@@ -232,12 +232,12 @@ else:
     rasLocation = CountyDataGDB
     inRasters = Raster(BAR), Raster(LV)
     arcpy.MosaicToNewRaster_management(inRasters, rasLocation, CoName + "_Herb","", "4_BIT", "1", "1", "LAST", "FIRST")
-    HERB = os.path.join( CountyDataGDB, CoName + "_Herb")
+    HERB = os.path.join(CountyDataGDB, CoName + "_Herb")
     arcpy.Delete_management("in_memory")
     print("--- TURF #2 Herbaceous Mosaic Complete %s seconds ---" % (time.time() - start_time))
 
 ## GOING WITH WORLDVIEW TURF
-"""
+"""SKIP ALWAYS
 # TURF 3: Identify Potential Rural Turf Based on Proximity to Development
 start_time = time.time()
 arcpy.env.overwriteoutput = True
@@ -376,8 +376,7 @@ else:
     arcpy.MosaicToNewRaster_management(inrasList, rasLocation, CoName + "_FTGmask", "", "4_BIT", "1", "1", "LAST", "FIRST")
     arcpy.Delete_management("in_memory")
     print("--- TURF #5b Fractional Turf Mask without Parcels Complete %s seconds ---" % (time.time() - start_time))
-"""
-"""SKIP FOR NOW
+
 # TURF 6: Extract Herbaceous within Turf Mask and Reclass
 start_time = time.time()
 outExtractByMask = ExtractByMask(CoName + "_Herb", CoName + "_TGmask")
@@ -397,7 +396,6 @@ inrasList = str(";".join(inrasList))
 arcpy.MosaicToNewRaster_management(inrasList, rasLocation, CoName + "_TG_1m", "", "4_BIT", "1", "1", "LAST", "FIRST")
 
 print("--- TURF #6 Turf Grass Complete %s seconds ---" % (time.time() - start_time))
-"""
 
 # FRAC 1: Extract Herbaceous within FTG Mask and Reclass
 start_time = time.time()
@@ -406,15 +404,17 @@ outExtractByMask.save(CoName + "_FTGtemp",)
 outSetNull = SetNull(CoName + "_FTGtemp", "11", "VALUE = 0")
 outSetNull.save(os.path.join(Output1mGDB, CoName + "_FTG_1m"))
 print("--- FRAC #1 Fractional Turf Grass Complete %s seconds ---" % (time.time() - start_time))
+"""
 
 # FRAC 2: Extract Herbaceous within FINR Mask and Reclass
 if arcpy.Exists(FINR_LU):
     try:
         arcpy.CalculateStatistics_management(FINR)
         outExtractByMask = ExtractByMask(HERB, FINR)
-        outExtractByMask.save(CoName + "_FINRtemp",)
-        outSetNull = SetNull(CoName + "_FINRtemp", "12", "VALUE = 0")
-        outSetNull.save(os.path.join(Output1mGDB, CoName + "_FINR_1m"))
+        outExtractByMask.save(os.path.join(Output1mGDB, CoName + "_FINR_1m"))
+        #outExtractByMask.save(CoName + "_FINRtemp",)
+        #outSetNull = SetNull(CoName + "_FINRtemp", "12", "VALUE = 0") # If the value == 0, make it null, if the value is != 0, make it 12
+        #outSetNull.save(os.path.join(Output1mGDB, CoName + "_FINR_1m"))
         print("--- FRAC #2 Fractional INR Complete ---")
     except:
         print("--- FRAC #2 Fractional INR Mask is Null ---")
@@ -512,7 +512,7 @@ rasLocation = CountyDataGDB
 inRasters = Raster(CoName + "_URB_TCT"), Raster(CoName + "_RUR_TCT")
 arcpy.MosaicToNewRaster_management(inRasters,rasLocation,CoName + "_TCT1","", "4_BIT", "1", "1", "LAST", "FIRST")
 outReclassify = Con(Raster(CoName + "_TCT1") ==1,9)
-outReclassify.save(Output1mGDB, CoName + "_TCT_1m")
+outReclassify.save(os.path.join(Output1mGDB, CoName + "_TCT_1m"))
 TCT = os.path.join(Output1mGDB, CoName + "_TCT_1m")
 arcpy.Delete_management("in_memory")
 print("--- FOR #6 Tree Cover over Turf Complete %s seconds ---" % (time.time() - start_time))
