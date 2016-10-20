@@ -373,7 +373,7 @@ else:
     # print (inrasList)
     rasLocation = CountyDataGDB
     inrasList = str(";".join(inrasList)) #delimit by ";"
-    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,CoName + "_FTGmask","", "4_BIT", "1", "1", "LAST", "FIRST")
+    arcpy.MosaicToNewRaster_management(inrasList, rasLocation, CoName + "_FTGmask", "", "4_BIT", "1", "1", "LAST", "FIRST")
     arcpy.Delete_management("in_memory")
     print("--- TURF #5b Fractional Turf Mask without Parcels Complete %s seconds ---" % (time.time() - start_time))
 """
@@ -397,10 +397,10 @@ worldview_reclass.save(CoName + "_WV_TURF")
 
 rasLocation = Output1mGDB
 inrasList = []
-inrasList.append(Raster(CoName + "_TG_1m_no_worldview_turf"))
-inrasList.append(Raster(CoName + "_WV_TURF"))
+inrasList.append(CoName + "_TG_1m_no_worldview_turf")
+inrasList.append(CoName + "_WV_TURF")
 inrasList = str(";".join(inrasList))
-arcpy.MosaicToNewRaster_management(inrasList, rasLocation, CoName + "_TG_1m", "4_BIT", "1", "1", "LAST", "FIRST")
+arcpy.MosaicToNewRaster_management(inrasList, rasLocation, CoName + "_TG_1m", "", "4_BIT", "1", "1", "LAST", "FIRST")
 
 #outSetNull.save(os.path.join(Output1mGDB, CoName + "_TG_1m"))
 print("--- TURF #6 Turf Grass Complete %s seconds ---" % (time.time() - start_time))
