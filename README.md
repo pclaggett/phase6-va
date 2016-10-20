@@ -8,20 +8,20 @@
 |-- Snap
 |-- Stream
 
-[DIR] COUNTY
+[DIR] COUNTY_FIPSCODE
 |
-|--[DIR] COUNTY_P6_Temp (Folder for storing intermediate geodatabase files)
-|    |--[GDB] COUNTY_1m.gdb  (Geodatabase for storing intermediate files related to 1m rasters)
-|    |--[GDB] COUNTY_10m.gdb (Geodatabase for storing intermediate files related to 10m rasters)
-|
-|--[GDB] COUNTY_P6_Resources (Geodatabase for storing model resources)
+|--[GDB] Data (Geodatabase for storing model resources)
 |    |-- TC      (Worldview classes 41, 42, 43, 61, all 100 classes except for 101, 121, 122)
 |    |-- LV      (Worldview classes 71, 81, 82, 171, 181, 182)
 |    |-- Barren  (Worldview classes 31, 131)
 |    |-- Other land use classes (e.g. MOBeach, DEV18/27/37/113, FedPark, TurfNT...)
 |
-|--[DIR] COUNTY_P6_Outputs (Folder for storing final geodatabase files)
-|    |--[GDB] COUNTY_Final_1m.gdb  (Geodatabase for storing final 1m rasters)
+|--[DIR] Temp (Folder for storing intermediate geodatabase files)
+|    |--[GDB] TEMP_1m.gdb  (Geodatabase for storing intermediate files related to 1m rasters)
+|    |--[GDB] TEMP_10m.gdb (Geodatabase for storing intermediate files related to 10m rasters)
+|
+|--[DIR] Outputs (Folder for storing final geodatabase files)
+|    |--[GDB] Final_1m.gdb  (Geodatabase for storing final 1m rasters. All of the following exist at the start of the model, except possible the wetlands rasters)
 |    |    |-- IR_1m
 |    |    |-- INR_1m
 |    |    |-- TCoI_1m
@@ -31,8 +31,8 @@
 |    |    |-- PAS_1m   (Worldview class 81)
 |    |    |-- CRO_1m   (Worldview class 82)
 |    |    
-|    |--[GDB] COUNTY_Final_10m.gdb (Geodatabase for storing final files 10m rasters)
-|    |--[DIR] COUNTY_Final_Tifs  (Directory for storing final 10m tifs)
+|    |--[GDB] Final_10m.gdb (Geodatabase for storing final files 10m rasters)
+|    |--[DIR] Final_Tifs  (Directory for storing final 10m tifs)
 
 ```
 
@@ -40,9 +40,9 @@
 
 ```
 ## Environments
-Working directory  --> COUNTY_P6_Temp/COUNTY_P6_Resources
-Scratch directory  --> COUNTY_P6_Temp/COUNTY_1m.gdb
-Snap raster        --> COUNTY_Final_1m.gdb/IR_1m
+Working directory  --> COUNTY_FIPSCODE/Data.gdb
+Scratch directory  --> COUNTY_FIPSCODE/Temp/Temp_1m.gdb
+Snap raster        --> COUNTY_FIPSCODE/Outputs/Final_1m.gdb/IR_1m
 
 ############# TURF MODEL #############
 ## TURF 1: Mosaic All Non-raod Impervious Surfaces
@@ -88,12 +88,12 @@ Snap raster        --> COUNTY_Final_1m.gdb/IR_1m
 ## Final 4: Split Mosaic and Reclass Land Uses to [1,0]
 
 ## Change environments
-Working directory  --> COUNTY_P6_Temp/COUNTY_10m.gdb
-Scratch directory  --> COUNTY_P6_Temp/COUNTY_10m.gdb
-Snap raster        --> County_P6_Resources.gdb/Snap
+Working directory  --> COUNTY_FIPSCODE/Temp/Temp_10m.gdb
+Scratch directory  --> COUNTY_FIPSCODE/Temp/Temp_10m.gdb
+Snap raster        --> Resources.gdb/Snap
 
 ## Final 5: Combine all 10m rasters
-## Final 6: Rename, Create, and Calcualte Fields
+## Final 6: Rename, Create, and Calcualte Fields  <--- NEED TO FIGURE OUT HOW CROP AND PASTURE EFFECT THIS
 ## Final 7: Create Final Phase 6 Rasters in a Geodatabase (necessary first step) and convert to TIFFs
 
 

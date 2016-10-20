@@ -12,6 +12,25 @@ else:
     arcpy.AddMessage(arcpy.GetMessages(0))
     sys.exit(0)
 
+#### County
+CoName = "FAIR_51059"
+
+#### Geodatabases
+
+## Resources and County Data
+ResourceGDB = "C:/_VA_P6_Landuse/Resources.gdb"
+CountyDataGDB = os.path.join("C:/_VA_P6_Landuse", CoName, "Data.gdb")
+
+## Temporary
+Temp1mGBD = os.path.join("C:/_VA_P6_Landuse", CoName, "Temp", "Temp_1m.gdb")
+Temp10mGDB = os.path.join("C:/_VA_P6_Landuse", CoName, "Temp", "Temp_10m.gdb")
+
+## Output
+Output1mGDB = os.path.join("C:/_VA_P6_Landuse", CoName, "Outputs", "Final_1m.gdb")
+Output10mGDB = os.path.join("C:/_VA_P6_Landuse", CoName, "Outputs", "Final_10m.gdb")
+TifDirectory = os.path.join("C:/_VA_P6_Landuse", CoName, "Outputs", "Final_Tifs")
+
+"""
 # Location of geodatabases
 if not arcpy.Exists("C:/A__P6_Analyst/A__P6_Temp"):
     arcpy.CreateFolder_management("C:/A__P6_Analyst","A__P6_Temp")
@@ -24,14 +43,59 @@ CoName = "ALLE_36003"  #ABCD_10001
 # Universal Global variables:
 CoGDB = os.path.join(str(MASKgdbDirectory),str(CoName) + "_Masks.gdb/")
 LuGDB = os.path.join(str(LUgdbDirectory),str(CoName) + "_1mLU.gdb/")
-arcpy.env.workspace = CoGDB
+"""
+
+#arcpy.env.workspace = CoGDB
+
+#### Environments
+arcpy.env.workspace = Temp1mGBD
 arcpy.env.overwriteOutput = True
-coord_data = os.path.join("C:/A__P6_Analyst/A__P6_Temp/", str(CoName) + "_10m.gdb/", str(CoName) + "_Snap")
-arcpy.env.outputCoordinateSystem = arcpy.Describe(coord_data).spatialReference
-arcpy.env.workspace = CoGDB
-arcpy.env.extent = os.path.join(str(LuGDB) + str(CoName) + "_IR_1m")
 arcpy.env.parallelProcessingFactor = "100%"
-arcpy.env.snapRaster = str(LuGDB) + str(CoName) + "_IR_1m" #location of the snap raster
+print(os.path.join(Output1mGDB, CoName, "_IR_1m"))
+arcpy.env.extent = os.path.join(Output1mGDB, CoName + "_IR_1m")          #Extent set to impervious roads
+arcpy.env.snapRaster = os.path.join(Output1mGDB, CoName + "_IR_1m")      #Snap raster set to impervious roads
+coord_data = os.path.join(ResourceGDB, "Phase6_Snap")
+arcpy.env.outputCoordinateSystem = arcpy.Describe(coord_data).spatialReference     #Ouput coordinate system set to impervious roads
+
+#### Local variables:
+BAR = os.path.join(CountyDataGDB, CoName + "_Barren")
+BEACH = os.path.join(CountyDataGDB, CoName + "_MOBeach")
+DEV113 = os.path.join(CountyDataGDB, CoName + "_DEV113")
+DEV37 = os.path.join(CountyDataGDB, CoName + "_DEV37")
+DEV27 = os.path.join(CountyDataGDB, CoName + "_DEV27")
+DEV18 = os.path.join(CountyDataGDB, CoName + "_DEV18")
+FEDS = os.path.join(CountyDataGDB, CoName + "_FedPark")
+FINR_LU = os.path.join(CountyDataGDB, CoName + "_FracINR")
+FTG_LU = os.path.join(CountyDataGDB, CoName + "_FracTG")
+INST = os.path.join(CountyDataGDB, CoName + "_TurfNT")
+T_LANDUSE = os.path.join(CountyDataGDB, CoName + "_TgLU")
+M_LANDUSE = os.path.join(CountyDataGDB, CoName + "_MoLU")
+LV = os.path.join(CountyDataGDB, CoName + "_LV")
+MINE = os.path.join(CountyDataGDB, CoName + "_ExtLFill")
+PARCELS = os.path.join(CountyDataGDB, CoName + "_Parcels")
+ROW = os.path.join(CountyDataGDB, CoName + "_RoW")
+SS = os.path.join(CountyDataGDB, CoName + "_SS")
+TC = os.path.join(CountyDataGDB, CoName + "_TC") # Trees over pervious surfaces = 41 + 42 + 61 + all classes over 100 (except 101, 121, 122) (This includes 43 as well)
+TREES = os.path.join(CountyDataGDB, CoName + "_MOTrees")
+
+# 1 meter LU Rasters - Listed in Hierarchial Order:
+IR = os.path.join(Output1mGDB, CoName + "_IR_1m")
+INR = os.path.join(Output1mGDB, CoName + "_INR_1m")
+TCI = os.path.join(Output1mGDB, CoName + "_TCoI_1m")
+WAT = os.path.join(Output1mGDB, CoName + "_WAT_1m")
+WLT = os.path.join(Output1mGDB, CoName + "_WLT_1m")
+WLF = os.path.join(Output1mGDB, CoName + "_WLF_1m")
+WLO = os.path.join(Output1mGDB, CoName + "_WLO_1m")
+FOR = os.path.join(Output1mGDB, CoName + "_FOR_1m")
+TCT = os.path.join(Output1mGDB, CoName + "_TCT_1m")
+MO = os.path.join(Output1mGDB, CoName + "_MO_1m")
+FTG = os.path.join(Output1mGDB, CoName + "_FTG_1m")
+FINR = os.path.join(Output1mGDB, CoName + "_FINR_1m")
+TG = os.path.join(Output1mGDB, CoName + "_TG_1m")
+PAS = os.path.join(Output1mGDB, CoName + "_PAS_1m") # Worldview class 81
+CRP = os.path.join(Output1mGDB, CoName + "_CRP_1m") # Worldview class 82
+
+"""
 TempDirectory = "C:/A__P6_Analyst/A__P6_Temp/"  #create this
 if not arcpy.Exists(str(TempDirectory) + str(CoName) + "_1m.gdb"):
     arcpy.CreateFileGDB_management(str(TempDirectory), str(CoName) + "_1m.gdb")
@@ -87,6 +151,7 @@ FINR = os.path.join(str(LuGDB) + str(CoName) + "_FINR_1m")
 TG = os.path.join(str(LuGDB) + str(CoName) + "_TG_1m")
 PAS = os.path.join(str(LuGDB) + str(CoName) + "_PAS_1m") # class 81
 CRP = os.path.join(str(LuGDB) + str(CoName) + "_CRP_1m") # class 82
+"""
 
 print ("IR", arcpy.Exists(IR))
 print ("INR", arcpy.Exists(INR))
@@ -116,25 +181,25 @@ print ("TREES", arcpy.Exists(TREES))
 #---------------------------TURF & FRACTIONAL MODELS--------------------------------
 ALL_start_time = time.time()
 start_time = time.time()
-arcpy.Delete_management(str(CoGDB) + "Parcel_IMP")
-arcpy.Delete_management(str(CoGDB) + "Parcel_IMP2")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_INRmask")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_RTmask")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_Parcels_TURFtemp")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_Parcels_TURF")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_TURF_parcels")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_Parcels_FTGtemp")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_Parcels_FTG")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_FTG_parcels")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_TGmask")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_FTGmask")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_TURFtemp")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_FTGtemp")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_FINRtemp")
-arcpy.Delete_management(str(LuGDB) + str(CoName) + "_TG_1m")
-arcpy.Delete_management(str(LuGDB) + str(CoName) + "_TCI_1m")
-arcpy.Delete_management(str(LuGDB) + str(CoName) + "_FTG_1m")
-arcpy.Delete_management(str(LuGDB) + str(CoName) + "_FINR_1m")
+arcpy.Delete_management(os.path.join(CountyDataGDB, "Parcel_IMP"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, "Parcel_IMP2"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_INRmask"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_RTmask"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_Parcels_TURFtemp"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_Parcels_TURF"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_TURF_parcels"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_Parcels_FTGtemp"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_Parcels_FTG"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_FTG_parcels"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_TGmask"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_FTGmask"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_TURFtemp"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_FTGtemp"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_FINRtemp"))
+arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_TG_1m"))
+arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_TCI_1m"))
+arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_FTG_1m"))
+arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_FINR_1m"))
 print("--- Removal of TURF & FRAC Duplicate Files Complete %s seconds ---" % (time.time() - start_time))
 
 # TURF 1: Mosaic All Non-road Impervious Surfaces
