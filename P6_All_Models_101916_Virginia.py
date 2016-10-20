@@ -384,14 +384,8 @@ outExtractByMask = ExtractByMask(CoName + "_Herb", CoName + "_TGmask")
 outExtractByMask.save(CoName + "_TURFtemp",)
 outSetNull = SetNull(CoName + "_TURFtemp", "13", "VALUE = 0") # If the value == 0, make it null, if the value is != 0, make it 13
 outSetNull.save(CoName + "_TG_1m_no_worldview_turf")
-"""
 
 # TURF 6b: MOSAIC WITH WORLDVIEW CLASS 71
-
-#worldview_turf = Con(CoName + "_LaCoTC", 13, 0, "Value = 71")
-#worldview_turf.save(CoName + "_WV_TURFtemp")
-#worldview_turf_nulled = SetNull(CoName + "_WV_TURFtemp", "13", "VALUE = 0")
-#worldview_turf_nulled.save(CoName + "_WV_TURF")
 worldview_reclass = Reclassify(CoName + "_LaCoTC", "Value", RemapValue([[71,13]]), "NODATA")
 worldview_reclass.save(CoName + "_WV_TURF")
 
@@ -402,9 +396,8 @@ inrasList.append(CoName + "_WV_TURF")
 inrasList = str(";".join(inrasList))
 arcpy.MosaicToNewRaster_management(inrasList, rasLocation, CoName + "_TG_1m", "", "4_BIT", "1", "1", "LAST", "FIRST")
 
-#outSetNull.save(os.path.join(Output1mGDB, CoName + "_TG_1m"))
 print("--- TURF #6 Turf Grass Complete %s seconds ---" % (time.time() - start_time))
-sys.exit("look at worldview turf")
+"""
 
 # FRAC 1: Extract Herbaceous within FTG Mask and Reclass
 start_time = time.time()
@@ -444,6 +437,8 @@ arcpy.Delete_management(CoName + "_FTGmask")
 arcpy.Delete_management(CoName + "_TURFtemp")
 arcpy.Delete_management(CoName + "_FTGtemp")
 arcpy.Delete_management(CoName + "_FINRtemp")
+#arcpy.Delete_management(CoName + "_TG_1m_no_worldview_turf")
+#arcpy.Delete_management(CoName + "_WV_TURF")
 print("--- TURF & FRAC Clean Up Complete %s seconds ---" % (time.time() - start_time))
 
 #--------------------------------FOREST MODEL----------------------------------------
@@ -530,6 +525,7 @@ outTimes1 = TC * Raster(CoName + "_nonTCT")
 outTimes1.save(CoName + "_potFOR")
 arcpy.Delete_management("in_memory")
 print("--- FOR #7 Potential Forest Complete %s seconds ---" % (time.time() - start_time))
+
 """
 ############################# WETLAND SUBMODEL #############################
 #Extract CoName + "_WL" by each of the three masks mask
@@ -608,13 +604,17 @@ print("--- Wetland Model Complete %s seconds ---" % (time.time() - wl_start_time
 """
 # FOR 8: Separate Mixed Open Trees from Potential Forests considering adjacent natural land uses
 start_time = time.time()
-WLF = os.path.join(str(LuGDB),CoName + "_WLF_1m")
-WLO = os.path.join(str(LuGDB),CoName + "_WLO_1m")
-WLT = os.path.join(str(LuGDB),CoName + "_WLT_1m")
+WLF = os.path.join(Output1mGDB, CoName + "_WLF_1m")
+WLO = os.path.join(Output1mGDB, CoName + "_WLO_1m")
+WLT = os.path.join(Output1mGDB, CoName + "_WLT_1m")
 outCon = Con(Raster(WAT)==3,1)
 outCon.save(CoName + "_watFOR")
-WAT_FOR = os.path.join(str(CoGDB),CoName + "_watFOR")
-POT_FOR = os.path.join(CountyDataGDB,CoName + "_potFOR")
+print( "saved to workspace", arcpy.Exists(os.path.join(CountyDataGDB, CoName + "_watFOR")) )
+print( "saved to scratch", arcpy.Exists(os.path.join(Temp1mGBD, CoName + "_watFOR")) )
+
+sys.exit("stoppted after For 8")
+WAT_FOR = os.path.join(CountyDataGDB, CoName + "_watFOR")
+POT_FOR = os.path.join(CountyDataGDB, CoName + "_potFOR")
 
 print("WLF", arcpy.Exists(WLF))
 print("WLO", arcpy.Exists(WLO))
