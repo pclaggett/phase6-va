@@ -203,20 +203,24 @@ arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_FINR_1m"))
 print("--- Removal of TURF & FRAC Duplicate Files Complete %s seconds ---" % (time.time() - start_time))
 
 # TURF 1: Mosaic All Non-road Impervious Surfaces
+## SHOULD ALREADY BE COMPLETED
+"""
 outCon = Con(Raster(INR)==2,1)
-outCon.save(str(CoName) + "_INRmask")
-INRmask = os.path.join(str(CoGDB),str(CoName) + "_INRmask")
+outCon.save(CoName + "_INRmask")
+INRmask = os.path.join(Output1mGDB, CoName + "_INRmask")
 
-if arcpy.Exists(str(CoName) + "_3xImp"):
+
+if arcpy.Exists(CoName + "_3xImp"):
     print("Impervious Layer Exists")
 else:
     start_time = time.time()
-    rasLocation = os.path.join(str(CoGDB))
+    rasLocation = CountyDataGDB
     #inRasters = Raster(IR),Raster(INRmask), Raster(TCI)  # Just INR in VA
-    inRasters = Raster(INRmask)  # Just INR in VA
-    arcpy.MosaicToNewRaster_management(inRasters,rasLocation,str(CoName) + "_3xImp","", "4_BIT", "1", "1", "LAST", "FIRST")
+    inRasters = Raster(INR)  # Just INR in VA
+    arcpy.MosaicToNewRaster_management(inRasters,rasLocation, CoName + "_3xImp","", "4_BIT", "1", "1", "LAST", "FIRST")
     arcpy.Delete_management("in_memory")
     print("--- TURF #1 Impervious mosaic Complete %s seconds ---" % (time.time() - start_time))
+"""
 
 # TURF 2: Create Herbaceous Layer
 if arcpy.Exists(str(CoName) + "_Herb"):
@@ -269,7 +273,7 @@ if arcpy.Exists(PARCELS):
     arcpy.AddField_management(PARCELS, "UNIQUEID", "LONG", "", "", "", "", "NULLABLE", "NON_REQUIRED", "")
     arcpy.CalculateField_management(PARCELS, "UNIQUEID", "!OBJECTID!", "PYTHON_9.3", "")
     arcpy.Select_analysis(PARCELS, str(CoName) + "_Parcels_TURFtemp", 'ACRES2 <= 10')
-    Zstat = ZonalStatisticsAsTable(str(CoName) + "_Parcels_TURFtemp", "UNIQUEID", str(CoName) + "_3xImp", "Parcel_IMP", "DATA", "SUM")
+    Zstat = ZonalStatisticsAsTable(str(CoName) + "_Parcels_TURFtemp", "UNIQUEID", INR, "Parcel_IMP", "DATA", "SUM")
     arcpy.JoinField_management(str(CoName) + "_Parcels_TURFtemp", "UNIQUEID", "Parcel_IMP", "UNIQUEID",["SUM"])
     arcpy.Select_analysis(str(CoName) + "_Parcels_TURFtemp", str(CoName) + "_Parcels_TURF", 'SUM >= 93')
     arcpy.AddField_management(str(CoName) + "_Parcels_TURF", "VALUE", "SHORT", "", "", "", "", "NULLABLE", "NON_REQUIRED", "")
@@ -281,7 +285,7 @@ if arcpy.Exists(PARCELS):
 
     # TURF 4c: Create Fractional Turf Parcels
     arcpy.Select_analysis(PARCELS, str(CoName) + "_Parcels_FTGtemp", 'ACRES2 > 10')
-    Zstat = ZonalStatisticsAsTable(str(CoName) + "_Parcels_FTGtemp", "UNIQUEID", str(CoName) + "_3xImp", "Parcel_IMP2", "DATA", "SUM")
+    Zstat = ZonalStatisticsAsTable(str(CoName) + "_Parcels_FTGtemp", "UNIQUEID", INR, "Parcel_IMP2", "DATA", "SUM")
     arcpy.JoinField_management(str(CoName) + "_Parcels_FTGtemp", "UNIQUEID", "Parcel_IMP2", "UNIQUEID", ["SUM"])
     arcpy.AddField_management(str(CoName) + "_Parcels_FTGtemp", "PCT_IMP", "DOUBLE", "", "", "", "", "NULLABLE", "NON_REQUIRED", "")
     arcpy.AddField_management(str(CoName) + "_Parcels_FTGtemp", "VALUE", "SHORT", "", "", "", "", "NULLABLE", "NON_REQUIRED", "")

@@ -45,12 +45,12 @@ Scratch directory  --> COUNTY_FIPSCODE/Temp/Temp_1m.gdb
 Snap raster        --> COUNTY_FIPSCODE/Outputs/Final_1m.gdb/IR_1m
 
 ############# TURF MODEL #############
-## TURF 1: Mosaic All Non-raod Impervious Surfaces
+-- OMITTED -- ## TURF 1: Mosaic All Non-raod Impervious Surfaces     // In Virginia, only INR
 ## TURF 2: Create Herbaceous Layer
--- OMITTED -- ## TURF 3: Identify Potential Rural Turf Based on Proximity to Development
+-- OMITTED -- ## TURF 3: Identify Potential Rural Turf Based on Proximity to Development     // Using Worldview turf class
 ## TURF 4: Create Parcel-based Turf and Fractional Turf Masks
 ## TURF 4a: Check projection of parcel data and reproject if needed
--- OMITTED -- ## TURF 4b: Create Turf Parcels
+-- OMITTED -- ## TURF 4b: Create Turf Parcels     // Using Worldview turf class
 ## TURF 4c: Create Fractional Turf Parcels
 ## TURF 4d: Mosaic available overlays to create Turf Mask with parcels
    ++ ADJUSTMENT ++  Include only RoW and INST
