@@ -41,8 +41,8 @@ LUgdbDirectory = "C:/A__P6_Analyst/A__P6_1mLU/"  #Directory where LAND USE geoda
 CoName = "ALLE_36003"  #ABCD_10001
 
 # Universal Global variables:
-CoGDB = os.path.join(str(MASKgdbDirectory),str(CoName) + "_Masks.gdb/")
-LuGDB = os.path.join(str(LUgdbDirectory),str(CoName) + "_1mLU.gdb/")
+CoGDB = os.path.join(str(MASKgdbDirectory),CoName + "_Masks.gdb/")
+LuGDB = os.path.join(str(LUgdbDirectory),CoName + "_1mLU.gdb/")
 """
 
 #arcpy.env.workspace = CoGDB
@@ -52,7 +52,6 @@ arcpy.env.workspace = CountyDataGDB
 arcpy.env.scratchWorkspace = Temp1mGBD
 arcpy.env.overwriteOutput = True
 arcpy.env.parallelProcessingFactor = "100%"
-print(os.path.join(Output1mGDB, CoName, "_IR_1m"))
 arcpy.env.extent = os.path.join(Output1mGDB, CoName + "_IR_1m")          #Extent set to impervious roads
 arcpy.env.snapRaster = os.path.join(Output1mGDB, CoName + "_IR_1m")      #Snap raster set to impervious roads
 coord_data = os.path.join(ResourceGDB, "Phase6_Snap")
@@ -98,60 +97,60 @@ CRP = os.path.join(Output1mGDB, CoName + "_CRP_1m") # Worldview class 82
 
 """
 TempDirectory = "C:/A__P6_Analyst/A__P6_Temp/"  #create this
-if not arcpy.Exists(str(TempDirectory) + str(CoName) + "_1m.gdb"):
-    arcpy.CreateFileGDB_management(str(TempDirectory), str(CoName) + "_1m.gdb")
-if not arcpy.Exists(str(TempDirectory) + str(CoName) + "_10m.gdb"):
-    arcpy.CreateFileGDB_management(str(TempDirectory), str(CoName) + "_10m.gdb")
-TempGDB = os.path.join(str(TempDirectory) + str(CoName) + "_1m.gdb/")
-Temp10GDB = os.path.join(str(TempDirectory) + str(CoName) + "_10m.gdb/")
+if not arcpy.Exists(str(TempDirectory) + CoName + "_1m.gdb"):
+    arcpy.CreateFileGDB_management(str(TempDirectory), CoName + "_1m.gdb")
+if not arcpy.Exists(str(TempDirectory) + CoName + "_10m.gdb"):
+    arcpy.CreateFileGDB_management(str(TempDirectory), CoName + "_10m.gdb")
+TempGDB = os.path.join(str(TempDirectory) + CoName + "_1m.gdb/")
+Temp10GDB = os.path.join(str(TempDirectory) + CoName + "_10m.gdb/")
 arcpy.env.scratchWorkspace = TempGDB
 if not arcpy.Exists("C:/A__P6_Analyst/A__P6_10mLU"):
     arcpy.CreateFolder_management("C:/A__P6_Analyst","A__P6_10mLU")
 DirPath = "C:/A__P6_Analyst/A__P6_10mLU/"
-if not arcpy.Exists(str(DirPath) + str(CoName) + "_10m.gdb"):
-    arcpy.CreateFileGDB_management(str(DirPath), str(CoName) + "_10m.gdb")
-FinalGDB = os.path.join(str(DirPath) + str(CoName) + "_10m.gdb/")
-if not arcpy.Exists("C:/A__P6_Analyst/" + str(CoName) + "_FINAL"):
-    arcpy.CreateFolder_management("C:/A__P6_Analyst", str(CoName) + "_FINAL")
-FinalDirectory = "C:/A__P6_Analyst/" + str(CoName) + "_FINAL/"
+if not arcpy.Exists(str(DirPath) + CoName + "_10m.gdb"):
+    arcpy.CreateFileGDB_management(str(DirPath), CoName + "_10m.gdb")
+FinalGDB = os.path.join(str(DirPath) + CoName + "_10m.gdb/")
+if not arcpy.Exists("C:/A__P6_Analyst/" + CoName + "_FINAL"):
+    arcpy.CreateFolder_management("C:/A__P6_Analyst", CoName + "_FINAL")
+FinalDirectory = "C:/A__P6_Analyst/" + CoName + "_FINAL/"
 
 # Local variables:
-BAR = os.path.join(str(CoGDB) + str(CoName) + "_Barren")
-BEACH = os.path.join(str(CoGDB) + str(CoGDB),str(CoName) + "_MOBeach")
-DEV113 = os.path.join(str(CoGDB) + str(CoName) + "_DEV113")
-DEV37 = os.path.join(str(CoGDB) + str(CoName) + "_DEV37")
-DEV27 = os.path.join(str(CoGDB) + str(CoName) + "_DEV27")
-DEV18 = os.path.join(str(CoGDB) + str(CoName) + "_DEV18")
-FEDS = os.path.join(str(CoGDB) + str(CoName) + "_FedPark")
-FINR_LU = os.path.join(str(CoGDB) + str(CoName) + "_FracINR")
-FTG_LU = os.path.join(str(CoGDB) + str(CoName) + "_FracTG")
-INST = os.path.join(str(CoGDB) + str(CoName) + "_TurfNT")
-T_LANDUSE = os.path.join(str(CoGDB) + str(CoName) + "_TgLU")
-M_LANDUSE = os.path.join(str(CoGDB) + str(CoName) + "_MoLU")
-LV = os.path.join(str(CoGDB) + str(CoName) + "_LV")
-MINE = os.path.join(str(CoGDB) + str(CoName) + "_ExtLFill")
-PARCELS = os.path.join(str(CoGDB) + str(CoName) + "_Parcels")
-ROW = os.path.join(str(CoGDB) + str(CoName) + "_RoW")
-SS = os.path.join(str(CoGDB) + str(CoGDB),str(CoName) + "_SS")
-TC = os.path.join(str(CoGDB) + str(CoName) + "_TC") # Trees over pervious surfaces = 41 + 42 + 61 + all classes over 100 (except 101, 121, 122)
-TREES = os.path.join(str(CoGDB) + str(CoName) + "_MOTrees")
+BAR = os.path.join(str(CoGDB) + CoName + "_Barren")
+BEACH = os.path.join(str(CoGDB) + str(CoGDB),CoName + "_MOBeach")
+DEV113 = os.path.join(str(CoGDB) + CoName + "_DEV113")
+DEV37 = os.path.join(str(CoGDB) + CoName + "_DEV37")
+DEV27 = os.path.join(str(CoGDB) + CoName + "_DEV27")
+DEV18 = os.path.join(str(CoGDB) + CoName + "_DEV18")
+FEDS = os.path.join(str(CoGDB) + CoName + "_FedPark")
+FINR_LU = os.path.join(str(CoGDB) + CoName + "_FracINR")
+FTG_LU = os.path.join(str(CoGDB) + CoName + "_FracTG")
+INST = os.path.join(str(CoGDB) + CoName + "_TurfNT")
+T_LANDUSE = os.path.join(str(CoGDB) + CoName + "_TgLU")
+M_LANDUSE = os.path.join(str(CoGDB) + CoName + "_MoLU")
+LV = os.path.join(str(CoGDB) + CoName + "_LV")
+MINE = os.path.join(str(CoGDB) + CoName + "_ExtLFill")
+PARCELS = os.path.join(str(CoGDB) + CoName + "_Parcels")
+ROW = os.path.join(str(CoGDB) + CoName + "_RoW")
+SS = os.path.join(str(CoGDB) + str(CoGDB),CoName + "_SS")
+TC = os.path.join(str(CoGDB) + CoName + "_TC") # Trees over pervious surfaces = 41 + 42 + 61 + all classes over 100 (except 101, 121, 122)
+TREES = os.path.join(str(CoGDB) + CoName + "_MOTrees")
 
 # 1 meter LU Rasters - Listed in Hierarchial Order:
-IR = os.path.join(str(LuGDB) + str(CoName) + "_IR_1m") # exists already
-INR = os.path.join(str(LuGDB) + str(CoName) + "_INR_1m") # exists already
-TCI = os.path.join(str(LuGDB) + str(CoName) + "_TCoI_1m") # exists already
-WAT = os.path.join(str(LuGDB) + str(CoName) + "_WAT_1m")
-WLT = os.path.join(str(LuGDB) + str(CoName) + "_WLT_1m")
-WLF = os.path.join(str(LuGDB) + str(CoName) + "_WLF_1m")
-WLO = os.path.join(str(LuGDB) + str(CoName) + "_WLO_1m")
-FOR = os.path.join(str(LuGDB) + str(CoName) + "_FOR_1m")
-TCT = os.path.join(str(LuGDB) + str(CoName) + "_TCT_1m")
-MO = os.path.join(str(LuGDB) + str(CoName) + "_MO_1m")
-FTG = os.path.join(str(LuGDB) + str(CoName) + "_FTG_1m")
-FINR = os.path.join(str(LuGDB) + str(CoName) + "_FINR_1m")
-TG = os.path.join(str(LuGDB) + str(CoName) + "_TG_1m")
-PAS = os.path.join(str(LuGDB) + str(CoName) + "_PAS_1m") # class 81
-CRP = os.path.join(str(LuGDB) + str(CoName) + "_CRP_1m") # class 82
+IR = os.path.join(str(LuGDB) + CoName + "_IR_1m") # exists already
+INR = os.path.join(str(LuGDB) + CoName + "_INR_1m") # exists already
+TCI = os.path.join(str(LuGDB) + CoName + "_TCoI_1m") # exists already
+WAT = os.path.join(str(LuGDB) + CoName + "_WAT_1m")
+WLT = os.path.join(str(LuGDB) + CoName + "_WLT_1m")
+WLF = os.path.join(str(LuGDB) + CoName + "_WLF_1m")
+WLO = os.path.join(str(LuGDB) + CoName + "_WLO_1m")
+FOR = os.path.join(str(LuGDB) + CoName + "_FOR_1m")
+TCT = os.path.join(str(LuGDB) + CoName + "_TCT_1m")
+MO = os.path.join(str(LuGDB) + CoName + "_MO_1m")
+FTG = os.path.join(str(LuGDB) + CoName + "_FTG_1m")
+FINR = os.path.join(str(LuGDB) + CoName + "_FINR_1m")
+TG = os.path.join(str(LuGDB) + CoName + "_TG_1m")
+PAS = os.path.join(str(LuGDB) + CoName + "_PAS_1m") # class 81
+CRP = os.path.join(str(LuGDB) + CoName + "_CRP_1m") # class 82
 """
 
 print ("IR", arcpy.Exists(IR))
@@ -201,7 +200,7 @@ arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_TG_1m"))
 arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_TCI_1m"))
 arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_FTG_1m"))
 arcpy.Delete_management(os.path.join(Output1mGDB, CoName + "_FINR_1m"))
-print("--- Removal of TURF & FRAC Duplicate Files Complete %s seconds ---" % (time.time() - start_time))
+print("--- Removal of TURF & FRAC Duplicate Files Complete %s minutes ---" % (time.time() - start_time))
 
 # TURF 1: Mosaic All Non-road Impervious Surfaces
 ## SHOULD ONLY BE INR
@@ -229,21 +228,24 @@ if arcpy.Exists(CoName + "_Herb"):
 else:
     start_time = time.time()
     rasLocation = CountyDataGDB
-    inRasters = Raster(BAR),Raster(LV)
-    arcpy.MosaicToNewRaster_management(inRasters,rasLocation,str(CoName) + "_Herb","", "4_BIT", "1", "1", "LAST", "FIRST")
-    HERB = os.path.join(str(CoGDB) + str(CoName) + "_Herb")
+    inRasters = Raster(BAR), Raster(LV)
+    arcpy.MosaicToNewRaster_management(inRasters, rasLocation, CoName + "_Herb","", "4_BIT", "1", "1", "LAST", "FIRST")
+    HERB = os.path.join( CountyDataGDB, CoName + "_Herb")
     arcpy.Delete_management("in_memory")
-    print("--- TURF #2 Herbaceous Mosaic Complete %s seconds ---" % (time.time() - start_time))
+    print("--- TURF #2 Herbaceous Mosaic Complete %s minutes ---" % (time.time() - start_time))
 
+## GOING WITH WORLDVIEW TURF
+"""
 # TURF 3: Identify Potential Rural Turf Based on Proximity to Development
 start_time = time.time()
 arcpy.env.overwriteoutput = True
 outCostDistance = CostDistance(DEV18, DEV27, "10", "", "", "", "", "")
 RTmask = Int(Con(outCostDistance >= 0,1))
-RTmask.save(str(CoName) + "_RTmask")
-RTmask = os.path.join(str(CoGDB) + str(CoName) + "_RTmask")
+RTmask.save(CoName + "_RTmask")
+RTmask = os.path.join(CountyDataGDB, CoName + "_RTmask")
 arcpy.Delete_management("in_memory")
 print("--- TURF #3 Cost Distance Complete %s seconds ---" % (time.time() - start_time))
+"""
 
 # TURF 4: Create Parcel-based Turf and Fractional Turf Masks
 if arcpy.Exists(PARCELS):
@@ -251,19 +253,21 @@ if arcpy.Exists(PARCELS):
     start_time = time.time()
     P1 = arcpy.Describe(PARCELS).spatialReference
     P2 = arcpy.Describe(IR).spatialReference
-    if arcpy.Exists(str(CoName) + "_ParcelsAlb"):
-        PARCELS = os.path.join(str(CoGDB) + str(CoName) + "_ParcelsAlb")
+    if arcpy.Exists(CoName + "_ParcelsAlb"):
+        PARCELS = os.path.join(CountyDataGDB, CoName + "_ParcelsAlb")
         print("Projected parcel data exists")
     elif P1 == P2:
-        arcpy.Rename_management(PARCELS, str(CoName) + "_ParcelsAlb")
-        PARCELS = os.path.join(str(CoGDB) + str(CoName) + "_ParcelsAlb")
+        arcpy.Rename_management(PARCELS, CoName + "_ParcelsAlb")
+        PARCELS = os.path.join(CountyDataGDB, CoName + "_ParcelsAlb")
         print("Parcel projection correct and dataset renamed")
     else:
-        arcpy.Project_management(PARCELS, str(CoName) + "_ParcelsAlb", IR)
-        PARCELS = os.path.join(str(CoGDB) + str(CoName) + "_ParcelsAlb")
+        arcpy.Project_management(PARCELS, CoName + "_ParcelsAlb", IR)
+        PARCELS = os.path.join(CountyDataGDB, CoName + "_ParcelsAlb")
         print("Parcel data reprojected to Albers")
     print("--- TURF #4a Parcel Preprocessing Complete %s seconds ---" % (time.time() - start_time))
 
+    ## GOING WITH WORLDVIEW TURF
+    """
     # TURF 4b: Create Turf Parcels
     start_time = time.time()
     arcpy.env.overwriteoutput = True
@@ -272,28 +276,29 @@ if arcpy.Exists(PARCELS):
     arcpy.CalculateField_management(PARCELS, "ACRES2", "!shape.area@acres!", "PYTHON_9.3", "")
     arcpy.AddField_management(PARCELS, "UNIQUEID", "LONG", "", "", "", "", "NULLABLE", "NON_REQUIRED", "")
     arcpy.CalculateField_management(PARCELS, "UNIQUEID", "!OBJECTID!", "PYTHON_9.3", "")
-    arcpy.Select_analysis(PARCELS, str(CoName) + "_Parcels_TURFtemp", 'ACRES2 <= 10')
-    Zstat = ZonalStatisticsAsTable(str(CoName) + "_Parcels_TURFtemp", "UNIQUEID", INR, "Parcel_IMP", "DATA", "SUM")
-    arcpy.JoinField_management(str(CoName) + "_Parcels_TURFtemp", "UNIQUEID", "Parcel_IMP", "UNIQUEID",["SUM"])
-    arcpy.Select_analysis(str(CoName) + "_Parcels_TURFtemp", str(CoName) + "_Parcels_TURF", 'SUM >= 93')
-    arcpy.AddField_management(str(CoName) + "_Parcels_TURF", "VALUE", "SHORT", "", "", "", "", "NULLABLE", "NON_REQUIRED", "")
-    arcpy.CalculateField_management(str(CoName) + "_Parcels_TURF", "VALUE", "1", "PYTHON_9.3", "")
-    arcpy.FeatureToRaster_conversion(str(CoName) + "_Parcels_TURF", "VALUE", str(CoName) + "_TURF_parcels", 1)
-    TURFparcels = os.path.join(str(CoGDB),str(CoName) + "_TURF_parcels")
+    arcpy.Select_analysis(PARCELS, CoName + "_Parcels_TURFtemp", 'ACRES2 <= 10')
+    Zstat = ZonalStatisticsAsTable(CoName + "_Parcels_TURFtemp", "UNIQUEID", INR, "Parcel_IMP", "DATA", "SUM")
+    arcpy.JoinField_management(CoName + "_Parcels_TURFtemp", "UNIQUEID", "Parcel_IMP", "UNIQUEID",["SUM"])
+    arcpy.Select_analysis(CoName + "_Parcels_TURFtemp", CoName + "_Parcels_TURF", 'SUM >= 93')
+    arcpy.AddField_management(CoName + "_Parcels_TURF", "VALUE", "SHORT", "", "", "", "", "NULLABLE", "NON_REQUIRED", "")
+    arcpy.CalculateField_management(CoName + "_Parcels_TURF", "VALUE", "1", "PYTHON_9.3", "")
+    arcpy.FeatureToRaster_conversion(CoName + "_Parcels_TURF", "VALUE", CoName + "_TURF_parcels", 1)
+    TURFparcels = os.path.join(CountyDataGDB,CoName + "_TURF_parcels")
     arcpy.Delete_management("in_memory")
     print("--- TURF #4b Turf Parcels Complete %s seconds ---" % (time.time() - start_time))
+    """
 
     # TURF 4c: Create Fractional Turf Parcels
-    arcpy.Select_analysis(PARCELS, str(CoName) + "_Parcels_FTGtemp", 'ACRES2 > 10')
-    Zstat = ZonalStatisticsAsTable(str(CoName) + "_Parcels_FTGtemp", "UNIQUEID", INR, "Parcel_IMP2", "DATA", "SUM")
-    arcpy.JoinField_management(str(CoName) + "_Parcels_FTGtemp", "UNIQUEID", "Parcel_IMP2", "UNIQUEID", ["SUM"])
-    arcpy.AddField_management(str(CoName) + "_Parcels_FTGtemp", "PCT_IMP", "DOUBLE", "", "", "", "", "NULLABLE", "NON_REQUIRED", "")
-    arcpy.AddField_management(str(CoName) + "_Parcels_FTGtemp", "VALUE", "SHORT", "", "", "", "", "NULLABLE", "NON_REQUIRED", "")
-    arcpy.CalculateField_management(str(CoName) + "_Parcels_FTGtemp", "VALUE", "1", "PYTHON_9.3", "")
-    arcpy.CalculateField_management(str(CoName) + "_Parcels_FTGtemp", "PCT_IMP","min([!VALUE!,((!SUM!/4046.86)/!ACRES2!)])","PYTHON_9.3")
-    arcpy.Select_analysis(str(CoName) + "_Parcels_FTGtemp", str(CoName) + "_Parcels_FTG", 'PCT_IMP >= 0.1')
-    arcpy.FeatureToRaster_conversion(str(CoName) + "_Parcels_FTG", "VALUE", str(CoName) + "_FTG_parcels", 1)
-    FTGparcels = os.path.join(str(CoGDB),str(CoName) + "_FTG_parcels")
+    arcpy.Select_analysis(PARCELS, CoName + "_Parcels_FTGtemp", 'ACRES2 > 10')
+    Zstat = ZonalStatisticsAsTable(CoName + "_Parcels_FTGtemp", "UNIQUEID", INR, "Parcel_IMP2", "DATA", "SUM")
+    arcpy.JoinField_management(CoName + "_Parcels_FTGtemp", "UNIQUEID", "Parcel_IMP2", "UNIQUEID", ["SUM"])
+    arcpy.AddField_management(CoName + "_Parcels_FTGtemp", "PCT_IMP", "DOUBLE", "", "", "", "", "NULLABLE", "NON_REQUIRED", "")
+    arcpy.AddField_management(CoName + "_Parcels_FTGtemp", "VALUE", "SHORT", "", "", "", "", "NULLABLE", "NON_REQUIRED", "")
+    arcpy.CalculateField_management(CoName + "_Parcels_FTGtemp", "VALUE", "1", "PYTHON_9.3", "")
+    arcpy.CalculateField_management(CoName + "_Parcels_FTGtemp", "PCT_IMP","min([!VALUE!,((!SUM!/4046.86)/!ACRES2!)])","PYTHON_9.3")
+    arcpy.Select_analysis(CoName + "_Parcels_FTGtemp", CoName + "_Parcels_FTG", 'PCT_IMP >= 0.1')
+    arcpy.FeatureToRaster_conversion(CoName + "_Parcels_FTG", "VALUE", CoName + "_FTG_parcels", 1)
+    FTGparcels = os.path.join(CountyDataGDB,CoName + "_FTG_parcels")
     arcpy.Delete_management("in_memory")
     print("--- TURF #4c Fractional Parcels Complete %s seconds ---" % (time.time() - start_time))
 
@@ -313,9 +318,9 @@ if arcpy.Exists(PARCELS):
     #if arcpy.Exists(TURFparcels):
     #    inrasList.append(TURFparcels)
     # print (inrasList)
-    rasLocation = os.path.join(str(CoGDB))
+    rasLocation = CountyDataGDB
     inrasList = str(";".join(inrasList)) #delimit by ";"
-    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,str(CoName) + "_TGmask","", "4_BIT", "1", "1", "LAST", "FIRST")
+    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,CoName + "_TGmask","", "4_BIT", "1", "1", "LAST", "FIRST")
     arcpy.Delete_management("in_memory")
     print("--- TURF #4d Turf Mask with Parcels Complete %s seconds ---" % (time.time() - start_time))
 
@@ -329,9 +334,9 @@ if arcpy.Exists(PARCELS):
     if arcpy.Exists(FTGparcels):
         inrasList.append(FTGparcels)
     # print (inrasList)
-    rasLocation = os.path.join(str(CoGDB))
+    rasLocation = CountyDataGDB
     inrasList = str(";".join(inrasList)) #delimit by ";"
-    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,str(CoName) + "_FTGmask","", "4_BIT", "1", "1", "LAST", "FIRST")
+    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,CoName + "_FTGmask","", "4_BIT", "1", "1", "LAST", "FIRST")
     arcpy.Delete_management("in_memory")
     print("--- TURF #4e Fractional Turf Mask with Parcels Complete %s seconds ---" % (time.time() - start_time))
 else:
@@ -349,9 +354,9 @@ else:
     #if arcpy.Exists(T_LANDUSE):
     #    inrasList.append(T_LANDUSE)
     # print (inrasList)
-    rasLocation = os.path.join(str(CoGDB))
+    rasLocation = CountyDataGDB
     inrasList = str(";".join(inrasList)) #delimit by ";"
-    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,str(CoName) + "_TGmask","", "4_BIT", "1", "1", "LAST", "FIRST")
+    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,CoName + "_TGmask","", "4_BIT", "1", "1", "LAST", "FIRST")
     arcpy.Delete_management("in_memory")
     print("--- TURF #5a Turf Mask without Parcels Complete %s seconds ---" % (time.time() - start_time))
 
@@ -363,27 +368,27 @@ else:
     if arcpy.Exists(FEDS):
         inrasList.append(FEDS)
     # print (inrasList)
-    rasLocation = os.path.join(str(CoGDB))
+    rasLocation = CountyDataGDB
     inrasList = str(";".join(inrasList)) #delimit by ";"
-    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,str(CoName) + "_FTGmask","", "4_BIT", "1", "1", "LAST", "FIRST")
+    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,CoName + "_FTGmask","", "4_BIT", "1", "1", "LAST", "FIRST")
     arcpy.Delete_management("in_memory")
     print("--- TURF #5b Fractional Turf Mask without Parcels Complete %s seconds ---" % (time.time() - start_time))
 
 # TURF 6: Extract Herbaceous within Turf Mask and Reclass
 start_time = time.time()
-outExtractByMask = ExtractByMask(str(CoName) + "_Herb", str(CoName) + "_TGmask")
-outExtractByMask.save(str(CoGDB) + str(CoName) + "_TURFtemp",)
-outSetNull = SetNull(str(CoName) + "_TURFtemp", "13", "VALUE = 0")
+outExtractByMask = ExtractByMask(CoName + "_Herb", CoName + "_TGmask")
+outExtractByMask.save(CountyDataGDB, CoName + "_TURFtemp",)
+outSetNull = SetNull(CoName + "_TURFtemp", "13", "VALUE = 0")
 # MOSAIC WITH WORLDVIEW CLASS 71
-outSetNull.save(str(LuGDB) + str(CoName) + "_TG_1m")
+outSetNull.save(os.path.join(Output1mGDB, CoName + "_TG_1m"))
 print("--- TURF #6 Turf Grass Complete %s seconds ---" % (time.time() - start_time))
 
 # FRAC 1: Extract Herbaceous within FTG Mask and Reclass
 start_time = time.time()
-outExtractByMask = ExtractByMask(HERB, str(CoName) + "_FTGmask")
-outExtractByMask.save(str(CoName) + "_FTGtemp",)
-outSetNull = SetNull(str(CoName) + "_FTGtemp", "11", "VALUE = 0")
-outSetNull.save(str(LuGDB) + str(CoName) + "_FTG_1m")
+outExtractByMask = ExtractByMask(HERB, CoName + "_FTGmask")
+outExtractByMask.save(CoName + "_FTGtemp",)
+outSetNull = SetNull(CoName + "_FTGtemp", "11", "VALUE = 0")
+outSetNull.save(os.path.join(Output1mGDB, CoName + "_FTG_1m"))
 print("--- FRAC #1 Fractional Turf Grass Complete %s seconds ---" % (time.time() - start_time))
 
 # FRAC 2: Extract Herbaceous within FINR Mask and Reclass
@@ -391,9 +396,9 @@ if arcpy.Exists(FINR_LU):
     try:
         arcpy.CalculateStatistics_management(FINR)
         outExtractByMask = ExtractByMask(HERB, FINR)
-        outExtractByMask.save(str(CoName) + "_FINRtemp",)
-        outSetNull = SetNull(str(CoName) + "_FINRtemp", "12", "VALUE = 0")
-        outSetNull.save(str(LuGDB) + str(CoName) + "_FINR_1m")
+        outExtractByMask.save(CoName + "_FINRtemp",)
+        outSetNull = SetNull(CoName + "_FINRtemp", "12", "VALUE = 0")
+        outSetNull.save(os.path.join(Output1mGDB, CoName + "_FINR_1m"))
         print("--- FRAC #2 Fractional INR Complete ---")
     except:
         print("--- FRAC #2 Fractional INR Mask is Null ---")
@@ -402,49 +407,49 @@ else:
 
 # TURF & FRACTIONAL Clean up
 start_time = time.time()
-arcpy.Delete_management(str(CoGDB) + "Parcel_IMP")
-arcpy.Delete_management(str(CoGDB) + "Parcel_IMP2")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_RTmask")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_Parcels_TURFtemp")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_Parcels_TURF")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_TURF_parcels")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_Parcels_FTGtemp")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_Parcels_FTG")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_FTG_parcels")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_TGmask")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_FTGmask")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_TURFtemp")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_FTGtemp")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_FINRtemp")
+arcpy.Delete_management(CountyDataGDB + "Parcel_IMP")
+arcpy.Delete_management(CountyDataGDB + "Parcel_IMP2")
+arcpy.Delete_management(CountyDataGDB, CoName + "_RTmask")
+arcpy.Delete_management(CountyDataGDB, CoName + "_Parcels_TURFtemp")
+arcpy.Delete_management(CountyDataGDB, CoName + "_Parcels_TURF")
+arcpy.Delete_management(CountyDataGDB, CoName + "_TURF_parcels")
+arcpy.Delete_management(CountyDataGDB, CoName + "_Parcels_FTGtemp")
+arcpy.Delete_management(CountyDataGDB, CoName + "_Parcels_FTG")
+arcpy.Delete_management(CountyDataGDB, CoName + "_FTG_parcels")
+arcpy.Delete_management(CountyDataGDB, CoName + "_TGmask")
+arcpy.Delete_management(CountyDataGDB, CoName + "_FTGmask")
+arcpy.Delete_management(CountyDataGDB, CoName + "_TURFtemp")
+arcpy.Delete_management(CountyDataGDB, CoName + "_FTGtemp")
+arcpy.Delete_management(CountyDataGDB, CoName + "_FINRtemp")
 print("--- TURF & FRAC Clean Up Complete %s seconds ---" % (time.time() - start_time))
 
 #--------------------------------FOREST MODEL----------------------------------------
 start_time = time.time()
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_RLTCP")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_EDGE")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_CDEdge")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_URBmask")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_RURmask")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_CDEdge")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_URB_TCT")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_RUR_TCT")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_TCT1")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_nonTCT")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_potFOR")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_NATnhbrs")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_ForRG")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_MOtemp")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_MOspace")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_MOherb")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_MOTrees")
-arcpy.Delete_management(str(LuGDB) + str(CoName) + "_FOR_1m")
-arcpy.Delete_management(str(LuGDB) + str(CoName) + "_MO_1m")
+arcpy.Delete_management(CountyDataGDB, CoName + "_RLTCP")
+arcpy.Delete_management(CountyDataGDB, CoName + "_EDGE")
+arcpy.Delete_management(CountyDataGDB, CoName + "_CDEdge")
+arcpy.Delete_management(CountyDataGDB, CoName + "_URBmask")
+arcpy.Delete_management(CountyDataGDB, CoName + "_RURmask")
+arcpy.Delete_management(CountyDataGDB, CoName + "_CDEdge")
+arcpy.Delete_management(CountyDataGDB, CoName + "_URB_TCT")
+arcpy.Delete_management(CountyDataGDB, CoName + "_RUR_TCT")
+arcpy.Delete_management(CountyDataGDB, CoName + "_TCT1")
+arcpy.Delete_management(CountyDataGDB, CoName + "_nonTCT")
+arcpy.Delete_management(CountyDataGDB, CoName + "_potFOR")
+arcpy.Delete_management(CountyDataGDB, CoName + "_NATnhbrs")
+arcpy.Delete_management(CountyDataGDB, CoName + "_ForRG")
+arcpy.Delete_management(CountyDataGDB, CoName + "_MOtemp")
+arcpy.Delete_management(CountyDataGDB, CoName + "_MOspace")
+arcpy.Delete_management(CountyDataGDB, CoName + "_MOherb")
+arcpy.Delete_management(CountyDataGDB, CoName + "_MOTrees")
+arcpy.Delete_management(Output1mGDB, CoName + "_FOR_1m")
+arcpy.Delete_management(Output1mGDB, CoName + "_MO_1m")
 
 # FOR 1: Identify Rural Core Areas of Tree Canopy over Pervious Surfaces
 start_time = time.time()
 RLTCP = Int(SetNull(Con(IsNull(DEV113),1) * TC <=0,Con(IsNull(DEV113),1) * TC))
 RLTCP.save("RLTCP")
-arcpy.CopyRaster_management("RLTCP", str(CoName) + "_RLTCP","","0","0","","","4_BIT","","","","")
+arcpy.CopyRaster_management("RLTCP", CoName + "_RLTCP","","0","0","","","4_BIT","","","","")
 arcpy.Delete_management("RLTCP")
 arcpy.Delete_management("in_memory")
 print("--- FOR #1 RLTCP Creation Complete %s seconds ---" % (time.time() - start_time))
@@ -453,68 +458,68 @@ print("--- FOR #1 RLTCP Creation Complete %s seconds ---" % (time.time() - start
 start_time = time.time()
 EDGE = Int(SetNull(Con(IsNull(DEV27),1,0) * TC <=0,Con(IsNull(DEV27),1,0) * TC))
 EDGE.save("EDGE")
-arcpy.CopyRaster_management("EDGE", str(CoName) + "_EDGE","","0","0","","","4_BIT","","","","")
+arcpy.CopyRaster_management("EDGE", CoName + "_EDGE","","0","0","","","4_BIT","","","","")
 arcpy.Delete_management("EDGE")
 arcpy.Delete_management("in_memory")
 print("--- FOR #2 EDGE Creation Complete %s seconds ---" % (time.time() - start_time))
 
 # FOR 3: Bleed/Expand Rural Core Areas to Edge of Developed Areas
 start_time = time.time()
-outCostDistance = CostDistance(str(CoName) + "_RLTCP", str(CoName) + "_EDGE", "", "", "", "", "", "")
-outCostDistance.save(str(CoGDB) + str(CoName) + "_CDEdge")
+outCostDistance = CostDistance(CoName + "_RLTCP", CoName + "_EDGE", "", "", "", "", "", "")
+outCostDistance.save(CountyDataGDB, CoName + "_CDEdge")
 arcpy.Delete_management("in_memory")
 print("--- FOR #3 Cost Distance Complete %s seconds ---" % (time.time() - start_time))
 
 # FOR 4: Create Tree Canopy over Turf Grass Masks
 start_time = time.time()
-UrbMask = Int(Con(IsNull(str(CoName) + "_CDEdge"),1) * DEV37)
-UrbMask.save(str(CoName) + "_URBmask")
-RurMask = Int(Con(IsNull(str(CoName) + "_URBmask"),1))
-RurMask.save(str(CoName) + "_RURmask")
+UrbMask = Int(Con(IsNull(CoName + "_CDEdge"),1) * DEV37)
+UrbMask.save(CoName + "_URBmask")
+RurMask = Int(Con(IsNull(CoName + "_URBmask"),1))
+RurMask.save(CoName + "_RURmask")
 arcpy.Delete_management("in_memory")
 print("--- FOR #4 TCT Masks Complete %s seconds ---" % (time.time() - start_time))
 
 # FOR 5: Rural and Urban TCT
 start_time = time.time()
-RurTCT = Int(Raster(str(CoName) + "_RURmask") * TC * DEV18) #Limits extent of tree canopy in rural areas
-RurTCT.save(str(CoName) + "_RUR_TCT")
-outTimes = Raster(str(CoName) + "_URBmask") * TC
-outTimes.save(str(CoName) + "_URB_TCT")
+RurTCT = Int(Raster(CoName + "_RURmask") * TC * DEV18) #Limits extent of tree canopy in rural areas
+RurTCT.save(CoName + "_RUR_TCT")
+outTimes = Raster(CoName + "_URBmask") * TC
+outTimes.save(CoName + "_URB_TCT")
 arcpy.Delete_management("in_memory")
 print("--- FOR #5 Rural and Urban TCT Complete %s seconds ---" % (time.time() - start_time))
 
 # FOR 6: Final TCT (Mosaic to New Raster)
 start_time = time.time()
-rasLocation = os.path.join(str(CoGDB))
-inRasters = Raster(str(CoName) + "_URB_TCT"), Raster(str(CoName) + "_RUR_TCT")
-arcpy.MosaicToNewRaster_management(inRasters,rasLocation,str(CoName) + "_TCT1","", "4_BIT", "1", "1", "LAST", "FIRST")
-outReclassify = Con(Raster(str(CoName) + "_TCT1") ==1,9)
-outReclassify.save(str(LuGDB) + str(CoName) + "_TCT_1m")
-TCT = os.path.join(str(LuGDB) + str(CoName) + "_TCT_1m")
+rasLocation = CountyDataGDB
+inRasters = Raster(CoName + "_URB_TCT"), Raster(CoName + "_RUR_TCT")
+arcpy.MosaicToNewRaster_management(inRasters,rasLocation,CoName + "_TCT1","", "4_BIT", "1", "1", "LAST", "FIRST")
+outReclassify = Con(Raster(CoName + "_TCT1") ==1,9)
+outReclassify.save(Output1mGDB, CoName + "_TCT_1m")
+TCT = os.path.join(Output1mGDB, CoName + "_TCT_1m")
 arcpy.Delete_management("in_memory")
 print("--- FOR #6 Tree Cover over Turf Complete %s seconds ---" % (time.time() - start_time))
 
 # FOR 7: Identify Potential Forests
 start_time = time.time()
 NonTCT = Int(Con(IsNull(TCT),1))
-NonTCT.save(str(CoName) + "_nonTCT")
-outTimes1 = TC * Raster(str(CoName) + "_nonTCT")
-outTimes1.save(str(CoName) + "_potFOR")
+NonTCT.save(CoName + "_nonTCT")
+outTimes1 = TC * Raster(CoName + "_nonTCT")
+outTimes1.save(CoName + "_potFOR")
 arcpy.Delete_management("in_memory")
 print("--- FOR #7 Potential Forest Complete %s seconds ---" % (time.time() - start_time))
 """
 ############################# WETLAND SUBMODEL #############################
-#Extract str(CoName) + "_WL" by each of the three masks mask
+#Extract CoName + "_WL" by each of the three masks mask
 #Mosaic these three rasters with the nwi rasters -prioritizing NWI
 
 # Wetland Model: Define input layers
-fc_Tidal = os.path.join(str(CoGDB), str(CoName) +"_mask_tidal")
-fc_FPlain = os.path.join(str(CoGDB), str(CoName) +"_mask_fplain")
-fc_OTHWL = os.path.join(str(CoGDB), str(CoName) +"_mask_oth_wl")
-nwi_Tidal = os.path.join(str(CoGDB), str(CoName) +"_Tidal")
-nwi_FPlain = os.path.join(str(CoGDB), str(CoName) +"_NTFPW")
-nwi_OTHWL = os.path.join(str(CoGDB), str(CoName) +"_OtherWL")
-cc_wetlands = os.path.join(str(CoGDB), str(CoName) +"_WL")
+fc_Tidal = os.path.join(str(CoGDB), CoName +"_mask_tidal")
+fc_FPlain = os.path.join(str(CoGDB), CoName +"_mask_fplain")
+fc_OTHWL = os.path.join(str(CoGDB), CoName +"_mask_oth_wl")
+nwi_Tidal = os.path.join(str(CoGDB), CoName +"_Tidal")
+nwi_FPlain = os.path.join(str(CoGDB), CoName +"_NTFPW")
+nwi_OTHWL = os.path.join(str(CoGDB), CoName +"_OtherWL")
+cc_wetlands = os.path.join(str(CoGDB), CoName +"_WL")
 
 print ("Wetland Model Started")
 # Reclassification of CC Wetlands and Merge with NWI
@@ -523,11 +528,11 @@ if arcpy.Exists(cc_wetlands):
     # WET 1: Creating Tidal Raster
     if arcpy.Exists(nwi_Tidal):
         start_time = time.time()
-        output = os.path.join(str(CoGDB), str(CoName) +"_mask_tidal_diss")
+        output = os.path.join(str(CoGDB), CoName +"_mask_tidal_diss")
         arcpy.Dissolve_management(fc_Tidal, output, "WETCLASS")
         extractTidal = ExtractByMask(cc_wetlands, output)
         input_rasters = nwi_Tidal; extractTidal
-        arcpy.MosaicToNewRaster_management (input_rasters, str(LuGDB), str(CoName) + "_WLT_1m", "", "4_BIT", "1", "1", "FIRST", "")
+        arcpy.MosaicToNewRaster_management (input_rasters, str(LuGDB), CoName + "_WLT_1m", "", "4_BIT", "1", "1", "FIRST", "")
         arcpy.Delete_management(extractTidal)
         arcpy.Delete_management("in_memory")
         print("--- WET #1 Tidal Raster Created Complete %s seconds ---" % (time.time() - start_time))
@@ -537,12 +542,12 @@ if arcpy.Exists(cc_wetlands):
     # WET 2: Creating Flood Plain Raster
     if arcpy.Exists(nwi_FPlain):
         start_time = time.time()
-        output = os.path.join(str(CoGDB), str(CoName) +"_mask_fplain_diss")
+        output = os.path.join(str(CoGDB), CoName +"_mask_fplain_diss")
         arcpy.Dissolve_management(fc_FPlain, output, "WETCLASS")
         extractFPlain = ExtractByMask(cc_wetlands, output)
         nwiFP = Con(Raster(nwi_FPlain)==2,1)
         input_rasters = nwiFP; extractFPlain
-        arcpy.MosaicToNewRaster_management (input_rasters, CoGDB, str(CoName) + "_WLF_1m", "", "4_BIT", "1", "1", "FIRST", "")
+        arcpy.MosaicToNewRaster_management (input_rasters, CoGDB, CoName + "_WLF_1m", "", "4_BIT", "1", "1", "FIRST", "")
         arcpy.Delete_management(extractFPlain)
         arcpy.Delete_management("in_memory")
         print("--- WET #2 Flood Plain Raster Created Complete %s seconds ---" % (time.time() - start_time))
@@ -552,41 +557,41 @@ if arcpy.Exists(cc_wetlands):
     # WET 3: Creating Other Wetland Raster
     if arcpy.Exists(nwi_OTHWL):
         start_time = time.time()
-        output = os.path.join(str(CoGDB), str(CoName) +"_mask_oth_wl_diss")
+        output = os.path.join(str(CoGDB), CoName +"_mask_oth_wl_diss")
         arcpy.Dissolve_management(fc_OTHWL, output, "WETCLASS")
         extractOTH_WL = ExtractByMask(cc_wetlands, output)
         nwiOTH = Con(Raster(nwi_OTHWL)==3,1)
         input_rasters = nwiOTH; extractOTH_WL
-        arcpy.MosaicToNewRaster_management (input_rasters, LuGDB, str(CoName) + "_WLO_1m", "", "4_BIT", "1", "1", "FIRST", "")
+        arcpy.MosaicToNewRaster_management (input_rasters, LuGDB, CoName + "_WLO_1m", "", "4_BIT", "1", "1", "FIRST", "")
         arcpy.Delete_management(extractOTH_WL)
         arcpy.Delete_management("in_memory")
         print("--- WET #3 Other Wetland Raster Created Complete %s seconds ---" % (time.time() - start_time))
     else:
         print ("WET #3 No NWI Other Wetland Raster Exists")
 else:
-    coord_data = os.path.join("C:/A__P6_Analyst/A__P6_Temp/", str(CoName) + "_10m.gdb/", str(CoName) + "_Snap")
+    coord_data = os.path.join("C:/A__P6_Analyst/A__P6_Temp/", CoName + "_10m.gdb/", CoName + "_Snap")
     arcpy.env.outputCoordinateSystem = arcpy.Describe(coord_data).spatialReference
     if arcpy.Exists(nwi_Tidal):
-        arcpy.CopyRaster_management(nwi_Tidal,str(LuGDB) + str(CoName)+ "_WLT_1m","","0","0","","","4_BIT")
+        arcpy.CopyRaster_management(nwi_Tidal,str(LuGDB) + CoName+ "_WLT_1m","","0","0","","","4_BIT")
     if arcpy.Exists(nwi_FPlain):
         WLFprep = Con(Raster(nwi_FPlain)==2,1)
-        arcpy.CopyRaster_management(WLFprep,str(LuGDB) + str(CoName)+ "_WLF_1m","","0","0","","","4_BIT")
+        arcpy.CopyRaster_management(WLFprep,str(LuGDB) + CoName+ "_WLF_1m","","0","0","","","4_BIT")
     if arcpy.Exists(nwi_OTHWL):
         WLOprep = Con(Raster(nwi_OTHWL)==3,1)
-        arcpy.CopyRaster_management(WLOprep,str(LuGDB) + str(CoName)+ "_WLO_1m","","0","0","","","4_BIT")
+        arcpy.CopyRaster_management(WLOprep,str(LuGDB) + CoName+ "_WLO_1m","","0","0","","","4_BIT")
 
 print("--- Wetland Model Complete %s seconds ---" % (time.time() - wl_start_time))
 ###########################################################################################################
 """
 # FOR 8: Separate Mixed Open Trees from Potential Forests considering adjacent natural land uses
 start_time = time.time()
-WLF = os.path.join(str(LuGDB),str(CoName) + "_WLF_1m")
-WLO = os.path.join(str(LuGDB),str(CoName) + "_WLO_1m")
-WLT = os.path.join(str(LuGDB),str(CoName) + "_WLT_1m")
+WLF = os.path.join(str(LuGDB),CoName + "_WLF_1m")
+WLO = os.path.join(str(LuGDB),CoName + "_WLO_1m")
+WLT = os.path.join(str(LuGDB),CoName + "_WLT_1m")
 outCon = Con(Raster(WAT)==3,1)
-outCon.save(str(CoName) + "_watFOR")
-WAT_FOR = os.path.join(str(CoGDB),str(CoName) + "_watFOR")
-POT_FOR = os.path.join(str(CoGDB),str(CoName) + "_potFOR")
+outCon.save(CoName + "_watFOR")
+WAT_FOR = os.path.join(str(CoGDB),CoName + "_watFOR")
+POT_FOR = os.path.join(CountyDataGDB,CoName + "_potFOR")
 
 print("WLF", arcpy.Exists(WLF))
 print("WLO", arcpy.Exists(WLO))
@@ -608,17 +613,17 @@ if arcpy.Exists(POT_FOR):
 
 print (inrasList)
 inrasList = str(";".join(inrasList)) #delimit by ";"
-rasLocation = os.path.join(str(CoGDB))
-arcpy.MosaicToNewRaster_management(inrasList,rasLocation,str(CoName) + "_NATnhbrs","","4_BIT", "1", "1", "LAST", "FIRST")
-outRegionGrp = RegionGroup(Raster(str(CoName) + "_NATnhbrs"),"EIGHT","WITHIN","NO_LINK","0")
-outRegionGrp.save(str(CoName) + "_ForRG")
-outCon = Con(str(CoName) + "_ForRG", 1, "", "VALUE > 0 AND COUNT >= 4047")
+rasLocation = os.path.join(CountyDataGDB)
+arcpy.MosaicToNewRaster_management(inrasList,rasLocation,CoName + "_NATnhbrs","","4_BIT", "1", "1", "LAST", "FIRST")
+outRegionGrp = RegionGroup(Raster(CoName + "_NATnhbrs"),"EIGHT","WITHIN","NO_LINK","0")
+outRegionGrp.save(CoName + "_ForRG")
+outCon = Con(CoName + "_ForRG", 1, "", "VALUE > 0 AND COUNT >= 4047")
 outExtractByMask = ExtractByMask(TC,outCon)
 outCon2 = Con(outExtractByMask==1,8)
-outCon2.save(str(LuGDB) + str(CoName) + "_FOR_1m")
-outCon3 = Con(str(CoName) + "_ForRG",1,"", "VALUE > 0 AND COUNT < 4047")
+outCon2.save(Output1mGDB, CoName + "_FOR_1m")
+outCon3 = Con(CoName + "_ForRG",1,"", "VALUE > 0 AND COUNT < 4047")
 outExtractByMask = ExtractByMask(TC,outCon3)
-outExtractByMask.save(str(CoName) + "_MOTrees")
+outExtractByMask.save(CoName + "_MOTrees")
 arcpy.Delete_management("in_memory")
 print("--- FOR #8 Forest and Mixed Open Trees Complete %s seconds ---" % (time.time() - start_time))
 
@@ -639,43 +644,43 @@ if not inrasListMO:
         inrasList.append(TREES)
     if arcpy.Exists(SS):
         inrasList.append(SS)
-    rasLocation = os.path.join(str(CoGDB))
+    rasLocation = CountyDataGDB
     inrasList = str(";".join(inrasList)) #delimit by ";"
-    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,str(CoName) + "_MOtemp","", "4_BIT", "1", "1", "LAST", "FIRST")
-    outSetNull = SetNull(str(CoName) + "_MOtemp", "10", "VALUE = 0")
-    outSetNull.save(str(LuGDB) + str(CoName) + "_MO_1m")
+    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,CoName + "_MOtemp","", "4_BIT", "1", "1", "LAST", "FIRST")
+    outSetNull = SetNull(CoName + "_MOtemp", "10", "VALUE = 0")
+    outSetNull.save(Output1mGDB, CoName + "_MO_1m")
     arcpy.Delete_management("in_memory")
     print("--- MO #1 Mixed Open Complete %s seconds ---" % (time.time() - start_time))
 else:
     # MO 2: Create Mixed Open with Ancillary Data
     # Step 2a: Create Potential Mixed Open Area
     start_time = time.time()
-    rasLocation = os.path.join(str(CoGDB))
+    rasLocation = CountyDataGDB
     inrasList = str(";".join(inrasListMO)) #delimit by ";"
-    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,str(CoName) + "_MOspace","", "4_BIT", "1", "1", "LAST", "FIRST")
+    arcpy.MosaicToNewRaster_management(inrasList,rasLocation,CoName + "_MOspace","", "4_BIT", "1", "1", "LAST", "FIRST")
     arcpy.Delete_management("in_memory")
     print("--- MO #2a MOspace Complete %s seconds ---" % (time.time() - start_time))
 
     # MO 2b: Create Herbaceous Layer
-    if arcpy.Exists(str(CoName) + "_Herb"):
-        HERB = os.path.join(str(CoGDB) + str(CoName) + "_Herb")
+    if arcpy.Exists(CoName + "_Herb"):
+        HERB = os.path.join(CountyDataGDB, CoName + "_Herb")
         print("Herbaceous Layer Exists")
     else:
         start_time = time.time()
-        rasLocation = os.path.join(str(CoGDB))
+        rasLocation = CountyDataGDB
         inRasters = Raster(BAR),Raster(LV)
-        arcpy.MosaicToNewRaster_management(inRasters,rasLocation,str(CoName) + "_Herb","", "4_BIT", "1", "1", "LAST", "FIRST")
-        HERB = os.path.join(str(CoGDB) + str(CoName) + "_Herb")
+        arcpy.MosaicToNewRaster_management(inRasters,rasLocation,CoName + "_Herb","", "4_BIT", "1", "1", "LAST", "FIRST")
+        HERB = os.path.join(CountyDataGDB, CoName + "_Herb")
         arcpy.Delete_management("in_memory")
         print("--- MO #2b Herbaceous Mosaic Complete %s seconds ---" % (time.time() - start_time))
 
     # MO 2c: Extract Herbaceous within MOspace.
     start_time = time.time()
     inRaster = Raster(HERB)
-    inMaskData = Raster(str(CoName) + "_MOspace")
+    inMaskData = Raster(CoName + "_MOspace")
     outExtractByMask = ExtractByMask(inRaster, inMaskData)
-    outExtractByMask.save(str(CoName) + "_MOherb")
-    MOherb = os.path.join(str(CoGDB) + str(CoName) + "_MOherb")
+    outExtractByMask.save(CoName + "_MOherb")
+    MOherb = os.path.join(CountyDataGDB, CoName + "_MOherb")
     arcpy.Delete_management("in_memory")
     print("--- MO #2c Extract MOherb Complete %s seconds ---" % (time.time() - start_time))
 
@@ -688,32 +693,32 @@ else:
     if arcpy.Exists(MOherb):
         inrasList.append(MOherb)
     start_time = time.time()
-    rasLocation = os.path.join(str(CoGDB))
+    rasLocation = CountyDataGDB
     inrasList = str(";".join(inrasList)) #delimit by ";"
-    arcpy.MosaicToNewRaster_management(inrasList, rasLocation, str(CoName) + "_MOtemp","", "4_BIT", "1", "1", "LAST", "FIRST")
-    outSetNull = SetNull(str(CoName) + "_MOtemp", "10", "VALUE = 0")
-    outSetNull.save(str(LuGDB) + str(CoName) + "_MO_1m")
+    arcpy.MosaicToNewRaster_management(inrasList, rasLocation, CoName + "_MOtemp","", "4_BIT", "1", "1", "LAST", "FIRST")
+    outSetNull = SetNull(CoName + "_MOtemp", "10", "VALUE = 0")
+    outSetNull.save(Output1mGDB, CoName + "_MO_1m")
     arcpy.Delete_management("in_memory")
     print("--- MO #2d Mixed Open Complete %s seconds ---" % (time.time() - start_time))
 
 # FOREST & MIXED OPEN Clean up
 start_time = time.time()
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_RLTCP")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_EDGE")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_CDEdge")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_URBmask")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_RURmask")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_CDEdge")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_URB_TCT")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_RUR_TCT")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_TCT1")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_nonTCT")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_potFOR")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_NATnhbrs")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_ForRG")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_MOtemp")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_MOspace")
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_MOherb")
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_RLTCP"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_EDGE"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_CDEdge"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_URBmask"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_RURmask"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_CDEdge"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_URB_TCT"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_RUR_TCT"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_TCT1"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_nonTCT"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_potFOR"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_NATnhbrs"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_ForRG"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_MOtemp"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_MOspace"))
+arcpy.Delete_management(os.path.join(CountyDataGDB, CoName + "_MOherb"))
 print("--- FOREST & MIXED OPEN Clean Up Complete %s seconds ---" % (time.time() - start_time))
 
 #----------------------FINAL AGGREGATION MODEL-----------------------------------------
@@ -775,8 +780,8 @@ if arcpy.Exists(TG):
 start_time = time.time()
 rasLocation = os.path.join(str(CoGDB))
 outCellStats = CellStatistics(LUlist, "MINIMUM", "DATA") # LUlist must be used directly as inRasters because it has the correct format needed for CellStatistics, else 000732 error.
-arcpy.Delete_management(str(CoGDB) + str(CoName) + "_Mosaic")
-outCellStats.save(str(CoGDB) + str(CoName) + "_Mosaic")
+arcpy.Delete_management(CountyDataGDB, CoName + "_Mosaic")
+outCellStats.save(CountyDataGDB, CoName + "_Mosaic")
 arcpy.Delete_management("in_memory")
 print("--- Final #3 Non-Ag Mosaic Complete %s seconds ---" % (time.time() - start_time))
 
@@ -784,11 +789,11 @@ print("--- Final #3 Non-Ag Mosaic Complete %s seconds ---" % (time.time() - star
 start_time = time.time()
 arcpy.env.workspace = Temp10GDB
 arcpy.env.scratchWorkspace = Temp10GDB
-arcpy.env.snapRaster = str(Temp10GDB) + str(CoName) + "_Snap"
-arcpy.env.extent = str(Temp10GDB) + str(CoName) + "_Snap"
-arcpy.Delete_management(str(TempDirectory), str(CoName) + "_LuTable.dbf")
-arcpy.TableToTable_conversion(str(CoGDB) + str(CoName) + "_Mosaic", str(TempDirectory), str(CoName) + "_LuTable")
-LuTable = os.path.join(str(TempDirectory), str(CoName) + "_LuTable.dbf")
+arcpy.env.snapRaster = str(Temp10GDB) + CoName + "_Snap"
+arcpy.env.extent = str(Temp10GDB) + CoName + "_Snap"
+arcpy.Delete_management(str(TempDirectory), CoName + "_LuTable.dbf")
+arcpy.TableToTable_conversion(CountyDataGDB, CoName + "_Mosaic", str(TempDirectory), CoName + "_LuTable")
+LuTable = os.path.join(str(TempDirectory), CoName + "_LuTable.dbf")
 arcpy.JoinField_management(LuTable,"Value","C:/A__P6_Analyst/ClassNames.dbf","Value",["Class_Name"])
 rows = arcpy.SearchCursor(LuTable, "", "", "", "")
 for row in rows:
@@ -796,40 +801,40 @@ for row in rows:
     luClass = row.getValue("Value")
     sqlQuery = "Value = " + str(luClass)
     print (sqlQuery)
-    rasExtract = ExtractByAttributes(str(CoGDB) + str(CoName) + "_Mosaic", sqlQuery)
+    rasExtract = ExtractByAttributes(CountyDataGDB, CoName + "_Mosaic", sqlQuery)
     outCon = Con(IsNull(rasExtract),0,1) # Ag space at 1m
 #    PAS_1 = outCon * PAS
 #    CRP_1 = outCon * CRP
     outAgg = Aggregate(outCon, 10, "SUM", "TRUNCATE", "DATA")
-    outAgg.save(str(Temp10GDB) + str(CoName) + "_" + str(luAbr) + "_10m")
-outCon2 = Con(IsNull(str(CoGDB) + str(CoName) + "_Mosaic"),1,0)
-arcpy.env.snapRaster = str(Temp10GDB) + str(CoName) + "_Snap" #location of the 10m snap raster
+    outAgg.save(str(Temp10GDB) + CoName + "_" + str(luAbr) + "_10m")
+outCon2 = Con(IsNull(CountyDataGDB, CoName + "_Mosaic"),1,0)
+arcpy.env.snapRaster = str(Temp10GDB) + CoName + "_Snap" #location of the 10m snap raster
 outAgg2 = Aggregate(outCon2, 10, "SUM", "TRUNCATE", "DATA")
-outAgg2.save(str(Temp10GDB) + str(CoName) + "_" + "AG_10m")
+outAgg2.save(str(Temp10GDB) + CoName + "_" + "AG_10m")
 print("--- Final #4: All Land Uses Split and Reclassed  %s seconds ---" % (time.time() - start_time))
 
 # Final 5: Combine all 10m rasters (8-10 minutes)
 start_time = time.time()
-IR = os.path.join(str(Temp10GDB) + str(CoName) + "_IR_10m")
-INR = os.path.join(str(Temp10GDB) + str(CoName) + "_INR_10m")
-TCI = os.path.join(str(Temp10GDB) + str(CoName) + "_TCI_10m")
-WAT = os.path.join(str(Temp10GDB) + str(CoName) + "_WAT_10m")
-WLT = os.path.join(str(Temp10GDB) + str(CoName) + "_WLT_10m")
-WLF = os.path.join(str(Temp10GDB) + str(CoName) + "_WLF_10m")
-WLO = os.path.join(str(Temp10GDB) + str(CoName) + "_WLO_10m")
-FOR = os.path.join(str(Temp10GDB) + str(CoName) + "_FOR_10m")
-TCT = os.path.join(str(Temp10GDB) + str(CoName) + "_TCT_10m")
-MO = os.path.join(str(Temp10GDB) + str(CoName) + "_MO_10m")
-FTG = os.path.join(str(Temp10GDB) + str(CoName) + "_FTG_10m")
-FINR = os.path.join(str(Temp10GDB) + str(CoName) + "_FINR_10m")
-TG = os.path.join(str(Temp10GDB) + str(CoName) + "_TG_10m")
-AG = os.path.join(str(Temp10GDB) + str(CoName) + "_AG_10m")
-# crpCDL = os.path.join(str(Temp10GDB) + str(CoName) + "_crpCDL")
-# pasCDL = os.path.join(str(Temp10GDB) + str(CoName) + "_pasCDL")
-DEMstrm = os.path.join(str(Temp10GDB) + str(CoName) + "_Stream")
+IR = os.path.join(str(Temp10GDB) + CoName + "_IR_10m")
+INR = os.path.join(str(Temp10GDB) + CoName + "_INR_10m")
+TCI = os.path.join(str(Temp10GDB) + CoName + "_TCI_10m")
+WAT = os.path.join(str(Temp10GDB) + CoName + "_WAT_10m")
+WLT = os.path.join(str(Temp10GDB) + CoName + "_WLT_10m")
+WLF = os.path.join(str(Temp10GDB) + CoName + "_WLF_10m")
+WLO = os.path.join(str(Temp10GDB) + CoName + "_WLO_10m")
+FOR = os.path.join(str(Temp10GDB) + CoName + "_FOR_10m")
+TCT = os.path.join(str(Temp10GDB) + CoName + "_TCT_10m")
+MO = os.path.join(str(Temp10GDB) + CoName + "_MO_10m")
+FTG = os.path.join(str(Temp10GDB) + CoName + "_FTG_10m")
+FINR = os.path.join(str(Temp10GDB) + CoName + "_FINR_10m")
+TG = os.path.join(str(Temp10GDB) + CoName + "_TG_10m")
+AG = os.path.join(str(Temp10GDB) + CoName + "_AG_10m")
+# crpCDL = os.path.join(str(Temp10GDB) + CoName + "_crpCDL")
+# pasCDL = os.path.join(str(Temp10GDB) + CoName + "_pasCDL")
+DEMstrm = os.path.join(str(Temp10GDB) + CoName + "_Stream")
 outCon = Con(IsNull(DEMstrm),0,DEMstrm)
-outCon.save(str(Temp10GDB) + str(CoName) + "_NewStrm")
-NewStrm = os.path.join(str(Temp10GDB) + str(CoName) + "_NewStrm")
+outCon.save(str(Temp10GDB) + CoName + "_NewStrm")
+NewStrm = os.path.join(str(Temp10GDB) + CoName + "_NewStrm")
 
 print ("IR", arcpy.Exists(IR))
 print ("INR", arcpy.Exists(INR))
@@ -987,52 +992,52 @@ print("--- Final #6: Field Adjustments Complete  %s seconds ---" % (time.time() 
 
 # Final 7: Create Final Phase 6 Rasters in a Geodatabase (necessary first step) and convert to TIFFs
 start_time = time.time()
-arcpy.CopyRaster_management(outCombine,str(Temp10GDB) + str(CoName) + "_Combo","","0","0")
-arcpy.AddJoin_management(str(CoName)+"_Combo","Value",str(Temp10GDB) + "Combo","Value") #no need to save Combo as a DBF prior to this.
-P6classes = arcpy.sa.ExtractByMask(str(CoName) + "_Combo",str(CoName) + "_Combo") # must include sa in the string.
+arcpy.CopyRaster_management(outCombine,str(Temp10GDB) + CoName + "_Combo","","0","0")
+arcpy.AddJoin_management(CoName+"_Combo","Value",str(Temp10GDB) + "Combo","Value") #no need to save Combo as a DBF prior to this.
+P6classes = arcpy.sa.ExtractByMask(CoName + "_Combo",CoName + "_Combo") # must include sa in the string.
 arcpy.Delete_management("in_memory")
 outRaster = Lookup(P6classes,"IR")
-outRaster.save(str(FinalGDB) + str(CoName) + "_IR")
+outRaster.save(str(FinalGDB) + CoName + "_IR")
 outRaster = Lookup(P6classes, "INR_1")
-outRaster.save(str(FinalGDB) + str(CoName) + "_INR")
+outRaster.save(str(FinalGDB) + CoName + "_INR")
 outRaster = Lookup(P6classes, "TCI")
-outRaster.save(str(FinalGDB) + str(CoName) + "_TCI")
+outRaster.save(str(FinalGDB) + CoName + "_TCI")
 outRaster = Lookup(P6classes,"WAT_3")
-outRaster.save(str(FinalGDB) + str(CoName) + "_WAT")
+outRaster.save(str(FinalGDB) + CoName + "_WAT")
 if arcpy.Exists(WLT):
     outRaster = Lookup(P6classes, "WLT_1")
-    outRaster.save(str(FinalGDB) + str(CoName) + "_WLT")
+    outRaster.save(str(FinalGDB) + CoName + "_WLT")
 outRaster = Lookup(P6classes, "WLF_1")
-outRaster.save(str(FinalGDB) + str(CoName) + "_WLF")
+outRaster.save(str(FinalGDB) + CoName + "_WLF")
 outRaster = Lookup(P6classes, "WLO_1")
-outRaster.save(str(FinalGDB) + str(CoName) + "_WLO")
+outRaster.save(str(FinalGDB) + CoName + "_WLO")
 outRaster = Lookup(P6classes, "FOR_1")
-outRaster.save(str(FinalGDB) + str(CoName) + "_FOR")
+outRaster.save(str(FinalGDB) + CoName + "_FOR")
 outRaster = Lookup(P6classes, "TCT_1")
-outRaster.save(str(FinalGDB) + str(CoName) + "_TCT")
+outRaster.save(str(FinalGDB) + CoName + "_TCT")
 outRaster = Lookup(P6classes, "MO_2")
-outRaster.save(str(FinalGDB) + str(CoName) + "_MO")
+outRaster.save(str(FinalGDB) + CoName + "_MO")
 outRaster = Lookup(P6classes, "TG_2")
-outRaster.save(str(FinalGDB) + str(CoName) + "_TG")
+outRaster.save(str(FinalGDB) + CoName + "_TG")
 outRaster = Lookup(P6classes, "CRP_2")
-outRaster.save(str(FinalGDB) + str(CoName) + "_CRP")
+outRaster.save(str(FinalGDB) + CoName + "_CRP")
 outRaster = Lookup(P6classes, "PAS_2")
-outRaster.save(str(FinalGDB) + str(CoName) + "_PAS")
+outRaster.save(str(FinalGDB) + CoName + "_PAS")
 arcpy.env.workspace = FinalGDB
-arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_IR",str(FinalDirectory) + str(CoName) + "_IR.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_INR",str(FinalDirectory) + str(CoName) + "_INR.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_TCI",str(FinalDirectory) + str(CoName) + "_TCI.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_WAT",str(FinalDirectory) + str(CoName) + "_WAT.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_IR",str(FinalDirectory) + CoName + "_IR.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_INR",str(FinalDirectory) + CoName + "_INR.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_TCI",str(FinalDirectory) + CoName + "_TCI.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_WAT",str(FinalDirectory) + CoName + "_WAT.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
 if arcpy.Exists(WLT):
-    arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_WLT",str(FinalDirectory) + str(CoName) + "_WLT.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_WLF",str(FinalDirectory) + str(CoName) + "_WLF.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_WLO",str(FinalDirectory) + str(CoName) + "_WLO.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_FOR",str(FinalDirectory) + str(CoName) + "_FOR.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_TCT",str(FinalDirectory) + str(CoName) + "_TCT.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_MO",str(FinalDirectory) + str(CoName) + "_MO.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_TG",str(FinalDirectory) + str(CoName) + "_TG.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_CRP",str(FinalDirectory) + str(CoName) + "_CRP.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + str(CoName) + "_PAS",str(FinalDirectory) + str(CoName) + "_PAS.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+    arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_WLT",str(FinalDirectory) + CoName + "_WLT.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_WLF",str(FinalDirectory) + CoName + "_WLF.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_WLO",str(FinalDirectory) + CoName + "_WLO.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_FOR",str(FinalDirectory) + CoName + "_FOR.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_TCT",str(FinalDirectory) + CoName + "_TCT.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_MO",str(FinalDirectory) + CoName + "_MO.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_TG",str(FinalDirectory) + CoName + "_TG.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_CRP",str(FinalDirectory) + CoName + "_CRP.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_PAS",str(FinalDirectory) + CoName + "_PAS.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
 print("--- Final #7: Final Phase 6 Rasters Complete  %s seconds ---" % (time.time() - start_time))
 
 print("--- All Models Complete %s seconds ---" % (time.time() - ALL_start_time))
