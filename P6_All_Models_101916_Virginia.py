@@ -382,7 +382,7 @@ arcpy.Delete_management(CoName + "_FINRtemp")
 #arcpy.Delete_management(CoName + "_TG_1m_no_worldview_turf")
 #arcpy.Delete_management(CoName + "_WV_TURF")
 print("--- TURF & FRAC Clean Up Complete %s seconds ---" % (time.time() - start_time))
-"""
+
 #--------------------------------FOREST MODEL----------------------------------------
 start_time = time.time()
 arcpy.Delete_management(CoName + "_RLTCP")
@@ -418,7 +418,7 @@ print("--- FOR #1 RLTCP Creation Complete %s seconds ---" % (time.time() - start
 start_time = time.time()
 EDGE = Int(SetNull(Con(IsNull(DEV27),1,0) * TC <=0,Con(IsNull(DEV27),1,0) * TC))
 EDGE.save(CoName + "_EDGETemp")
-arcpy.CopyRaster_management("EDGETemp", CoName + "_EDGE", "","0","0","","","4_BIT","","","","")
+arcpy.CopyRaster_management(CoName + "_EDGETemp", CoName + "_EDGE", "","0","0","","","4_BIT","","","","")
 arcpy.Delete_management(CoName + "_EDGETemp")
 arcpy.Delete_management("in_memory")
 print("--- FOR #2 EDGE Creation Complete %s seconds ---" % (time.time() - start_time))
@@ -467,8 +467,8 @@ outTimes1 = TC * Raster(CoName + "_nonTCT")
 outTimes1.save(CoName + "_potFOR")
 arcpy.Delete_management("in_memory")
 print("--- FOR #7 Potential Forest Complete %s seconds ---" % (time.time() - start_time))
-
 """
+"""ALWAYS SKIP
 ############################# WETLAND SUBMODEL #############################
 #Extract CoName + "_WL" by each of the three masks mask
 #Mosaic these three rasters with the nwi rasters -prioritizing NWI
@@ -544,6 +544,7 @@ else:
 print("--- Wetland Model Complete %s seconds ---" % (time.time() - wl_start_time))
 ###########################################################################################################
 """
+
 # FOR 8: Separate Mixed Open Trees from Potential Forests considering adjacent natural land uses
 start_time = time.time()
 WLF = os.path.join(Output1mGDB, CoName + "_WLF_1m")
@@ -551,10 +552,8 @@ WLO = os.path.join(Output1mGDB, CoName + "_WLO_1m")
 WLT = os.path.join(Output1mGDB, CoName + "_WLT_1m")
 outCon = Con(Raster(WAT)==3,1)
 outCon.save(CoName + "_watFOR")
-print( "saved to workspace", arcpy.Exists(os.path.join(CountyDataGDB, CoName + "_watFOR")) )
-print( "saved to scratch", arcpy.Exists(os.path.join(Temp1mGBD, CoName + "_watFOR")) )
+#print( "saved to workspace", arcpy.Exists(os.path.join(CountyDataGDB, CoName + "_watFOR")) )
 
-sys.exit("stoppted after For 8")
 WAT_FOR = os.path.join(CountyDataGDB, CoName + "_watFOR")
 POT_FOR = os.path.join(CountyDataGDB, CoName + "_potFOR")
 
@@ -585,7 +584,7 @@ outRegionGrp.save(CoName + "_ForRG")
 outCon = Con(CoName + "_ForRG", 1, "", "VALUE > 0 AND COUNT >= 4047")
 outExtractByMask = ExtractByMask(TC,outCon)
 outCon2 = Con(outExtractByMask==1,8)
-outCon2.save(Output1mGDB, CoName + "_FOR_1m")
+outCon2.save(os.path.join(Output1mGDB, CoName + "_FOR_1m"))
 outCon3 = Con(CoName + "_ForRG",1,"", "VALUE > 0 AND COUNT < 4047")
 outExtractByMask = ExtractByMask(TC,outCon3)
 outExtractByMask.save(CoName + "_MOTrees")
@@ -613,7 +612,7 @@ if not inrasListMO:
     inrasList = str(";".join(inrasList)) #delimit by ";"
     arcpy.MosaicToNewRaster_management(inrasList,rasLocation,CoName + "_MOtemp","", "4_BIT", "1", "1", "LAST", "FIRST")
     outSetNull = SetNull(CoName + "_MOtemp", "10", "VALUE = 0")
-    outSetNull.save(Output1mGDB, CoName + "_MO_1m")
+    outSetNull.save(os.path.join(Output1mGDB, CoName + "_MO_1m"))
     arcpy.Delete_management("in_memory")
     print("--- MO #1 Mixed Open Complete %s seconds ---" % (time.time() - start_time))
 else:
@@ -662,7 +661,7 @@ else:
     inrasList = str(";".join(inrasList)) #delimit by ";"
     arcpy.MosaicToNewRaster_management(inrasList, rasLocation, CoName + "_MOtemp","", "4_BIT", "1", "1", "LAST", "FIRST")
     outSetNull = SetNull(CoName + "_MOtemp", "10", "VALUE = 0")
-    outSetNull.save(Output1mGDB, CoName + "_MO_1m")
+    outSetNull.save(os.path.join(Output1mGDB, CoName + "_MO_1m"))
     arcpy.Delete_management("in_memory")
     print("--- MO #2d Mixed Open Complete %s seconds ---" % (time.time() - start_time))
 
@@ -754,12 +753,11 @@ print("--- Final #3 Non-Ag Mosaic Complete %s seconds ---" % (time.time() - star
 start_time = time.time()
 arcpy.env.workspace = Temp10GDB
 arcpy.env.scratchWorkspace = Temp10GDB
-arcpy.env.snapRaster = str(Temp10GDB) + CoName + "_Snap"
-arcpy.env.extent = str(Temp10GDB) + CoName + "_Snap"
+arcpy.env.extent = os.path.join(ResourceGDB, "Phase6_Snap")
 #arcpy.Delete_management(str(TempDirectory), CoName + "_LuTable.dbf")  # This deletes the temp directory?
 arcpy.TableToTable_conversion(CoName + "_Mosaic", TempDirectory, CoName + "_LuTable")
 LuTable = os.path.join(TempDirectory, CoName + "_LuTable.dbf")
-arcpy.JoinField_management(LuTable,"Value","C:/A__P6_Analyst/ClassNames.dbf","Value",["Class_Name"])
+arcpy.JoinField_management(LuTable, "Value", "C:/A__P6_Analyst/ClassNames.dbf", "Value", ["Class_Name"])
 rows = arcpy.SearchCursor(LuTable, "", "", "", "")
 for row in rows:
     luAbr = row.getValue("Class_Name")
@@ -771,35 +769,35 @@ for row in rows:
 #    PAS_1 = outCon * PAS
 #    CRP_1 = outCon * CRP
     outAgg = Aggregate(outCon, 10, "SUM", "TRUNCATE", "DATA")
-    outAgg.save(str(Temp10GDB) + CoName + "_" + str(luAbr) + "_10m")
-outCon2 = Con(IsNull(CountyDataGDB, CoName + "_Mosaic"),1,0)
-arcpy.env.snapRaster = str(Temp10GDB) + CoName + "_Snap" #location of the 10m snap raster
+    outAgg.save(os.path.join(Temp10mGDB, CoName + "_" + str(luAbr) + "_10m"))
+outCon2 = Con(IsNull(os.path.join(CountyDataGDB, CoName + "_Mosaic")),1,0)
+arcpy.env.snapRaster = os.path.join(ResourceGDB, "Phase6_Snap") #location of the 10m snap raster
 outAgg2 = Aggregate(outCon2, 10, "SUM", "TRUNCATE", "DATA")
-outAgg2.save(str(Temp10GDB) + CoName + "_" + "AG_10m")
+outAgg2.save(os.path.join(Temp10mGDB, CoName + "_" + "AG_10m"))
 print("--- Final #4: All Land Uses Split and Reclassed  %s seconds ---" % (time.time() - start_time))
 
 # Final 5: Combine all 10m rasters (8-10 minutes)
 start_time = time.time()
-IR = os.path.join(str(Temp10GDB) + CoName + "_IR_10m")
-INR = os.path.join(str(Temp10GDB) + CoName + "_INR_10m")
-TCI = os.path.join(str(Temp10GDB) + CoName + "_TCI_10m")
-WAT = os.path.join(str(Temp10GDB) + CoName + "_WAT_10m")
-WLT = os.path.join(str(Temp10GDB) + CoName + "_WLT_10m")
-WLF = os.path.join(str(Temp10GDB) + CoName + "_WLF_10m")
-WLO = os.path.join(str(Temp10GDB) + CoName + "_WLO_10m")
-FOR = os.path.join(str(Temp10GDB) + CoName + "_FOR_10m")
-TCT = os.path.join(str(Temp10GDB) + CoName + "_TCT_10m")
-MO = os.path.join(str(Temp10GDB) + CoName + "_MO_10m")
-FTG = os.path.join(str(Temp10GDB) + CoName + "_FTG_10m")
-FINR = os.path.join(str(Temp10GDB) + CoName + "_FINR_10m")
-TG = os.path.join(str(Temp10GDB) + CoName + "_TG_10m")
-AG = os.path.join(str(Temp10GDB) + CoName + "_AG_10m")
+IR = os.path.join(Temp10mGDB, CoName + "_IR_10m")
+INR = os.path.join(Temp10mGDB, Temp10mGDB, CoName + "_INR_10m")
+TCI = os.path.join(Temp10mGDB, CoName + "_TCI_10m")
+WAT = os.path.join(Temp10mGDB, CoName + "_WAT_10m")
+WLT = os.path.join(Temp10mGDB, CoName + "_WLT_10m")
+WLF = os.path.join(Temp10mGDB, CoName + "_WLF_10m")
+WLO = os.path.join(Temp10mGDB, CoName + "_WLO_10m")
+FOR = os.path.join(Temp10mGDB, CoName + "_FOR_10m")
+TCT = os.path.join(Temp10mGDB, CoName + "_TCT_10m")
+MO = os.path.join(Temp10mGDB, CoName + "_MO_10m")
+FTG = os.path.join(Temp10mGDB, CoName + "_FTG_10m")
+FINR = os.path.join(Temp10mGDB, CoName + "_FINR_10m")
+TG = os.path.join(Temp10mGDB, CoName + "_TG_10m")
+AG = os.path.join(Temp10mGDB, CoName + "_AG_10m")
 # crpCDL = os.path.join(str(Temp10GDB) + CoName + "_crpCDL")
 # pasCDL = os.path.join(str(Temp10GDB) + CoName + "_pasCDL")
-DEMstrm = os.path.join(str(Temp10GDB) + CoName + "_Stream")
+DEMstrm = os.path.join(Temp10mGDB, CoName + "_Stream")
 outCon = Con(IsNull(DEMstrm),0,DEMstrm)
-outCon.save(str(Temp10GDB) + CoName + "_NewStrm")
-NewStrm = os.path.join(str(Temp10GDB) + CoName + "_NewStrm")
+outCon.save(Temp10mGDB, CoName + "_NewStrm")
+NewStrm = os.path.join(Temp10mGDB, CoName + "_NewStrm")
 
 print ("IR", arcpy.Exists(IR))
 print ("INR", arcpy.Exists(INR))
@@ -862,8 +860,8 @@ print("--- Final #5: Combine Complete  %s seconds ---" % (time.time() - start_ti
 
 # Final 6: Rename, Create, and Calcualte Fields (~ 25 minutes)
 start_time = time.time()
-arcpy.TableToTable_conversion(outCombine,str(Temp10GDB), "Combo")
-Combo = str(Temp10GDB) + "Combo"
+arcpy.TableToTable_conversion(outCombine , Temp10mGDB, "Combo")
+Combo = os.path.join(Temp10mGDB, "Combo")
 for field in arcpy.ListFields(Combo,"*_*"):
     old_field = field.name
     new_field = old_field.split("_",3)[2]
@@ -962,47 +960,47 @@ arcpy.AddJoin_management(CoName+"_Combo","Value",str(Temp10GDB) + "Combo","Value
 P6classes = arcpy.sa.ExtractByMask(CoName + "_Combo",CoName + "_Combo") # must include sa in the string.
 arcpy.Delete_management("in_memory")
 outRaster = Lookup(P6classes,"IR")
-outRaster.save(str(FinalGDB) + CoName + "_IR")
+outRaster.save(os.path.join(Output10mGDB, CoName + "_IR"))
 outRaster = Lookup(P6classes, "INR_1")
-outRaster.save(str(FinalGDB) + CoName + "_INR")
+outRaster.save(os.path.join(Output10mGDB, CoName + "_INR"))
 outRaster = Lookup(P6classes, "TCI")
-outRaster.save(str(FinalGDB) + CoName + "_TCI")
+outRaster.save(os.path.join(Output10mGDB, CoName + "_TCI"))
 outRaster = Lookup(P6classes,"WAT_3")
-outRaster.save(str(FinalGDB) + CoName + "_WAT")
+outRaster.save(os.path.join(Output10mGDB, CoName + "_WAT"))
 if arcpy.Exists(WLT):
     outRaster = Lookup(P6classes, "WLT_1")
-    outRaster.save(str(FinalGDB) + CoName + "_WLT")
+    outRaster.save(os.path.join(Output10mGDB, CoName + "_WLT"))
 outRaster = Lookup(P6classes, "WLF_1")
-outRaster.save(str(FinalGDB) + CoName + "_WLF")
+outRaster.save(os.path.join(Output10mGDB, CoName + "_WLF"))
 outRaster = Lookup(P6classes, "WLO_1")
-outRaster.save(str(FinalGDB) + CoName + "_WLO")
+outRaster.save(os.path.join(Output10mGDB, CoName + "_WLO"))
 outRaster = Lookup(P6classes, "FOR_1")
-outRaster.save(str(FinalGDB) + CoName + "_FOR")
+outRaster.save(os.path.join(Output10mGDB, CoName + "_FOR"))
 outRaster = Lookup(P6classes, "TCT_1")
-outRaster.save(str(FinalGDB) + CoName + "_TCT")
+outRaster.save(os.path.join(Output10mGDB, CoName + "_TCT"))
 outRaster = Lookup(P6classes, "MO_2")
-outRaster.save(str(FinalGDB) + CoName + "_MO")
+outRaster.save(os.path.join(Output10mGDB, CoName + "_MO"))
 outRaster = Lookup(P6classes, "TG_2")
-outRaster.save(str(FinalGDB) + CoName + "_TG")
+outRaster.save(os.path.join(Output10mGDB, CoName + "_TG"))
 outRaster = Lookup(P6classes, "CRP_2")
-outRaster.save(str(FinalGDB) + CoName + "_CRP")
+outRaster.save(os.path.join(Output10mGDB, CoName + "_CRP"))
 outRaster = Lookup(P6classes, "PAS_2")
-outRaster.save(str(FinalGDB) + CoName + "_PAS")
+outRaster.save(os.path.join(Output10mGDB, CoName + "_PAS"))
 arcpy.env.workspace = FinalGDB
-arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_IR",str(FinalDirectory) + CoName + "_IR.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_INR",str(FinalDirectory) + CoName + "_INR.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_TCI",str(FinalDirectory) + CoName + "_TCI.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_WAT",str(FinalDirectory) + CoName + "_WAT.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_IR"), os.path.join(TifDirectory, CoName + "_IR.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_INR"), os.path.join(TifDirectory, CoName + "_INR.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_TCI"), os.path.join(TifDirectory, CoName + "_TCI.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_WAT"), os.path.join(TifDirectory, CoName + "_WAT.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
 if arcpy.Exists(WLT):
-    arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_WLT",str(FinalDirectory) + CoName + "_WLT.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_WLF",str(FinalDirectory) + CoName + "_WLF.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_WLO",str(FinalDirectory) + CoName + "_WLO.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_FOR",str(FinalDirectory) + CoName + "_FOR.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_TCT",str(FinalDirectory) + CoName + "_TCT.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_MO",str(FinalDirectory) + CoName + "_MO.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_TG",str(FinalDirectory) + CoName + "_TG.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_CRP",str(FinalDirectory) + CoName + "_CRP.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
-arcpy.CopyRaster_management(str(FinalGDB) + CoName + "_PAS",str(FinalDirectory) + CoName + "_PAS.tif","","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+    arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_WLT"), os.path.join(TifDirectory, CoName + "_WLT.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_WLF"), os.path.join(TifDirectory, CoName + "_WLF.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_WLO"), os.path.join(TifDirectory, CoName + "_WLO.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_FOR"), os.path.join(TifDirectory, CoName + "_FOR.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_TCT"), os.path.join(TifDirectory, CoName + "_TCT.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_MO"), os.path.join(TifDirectory, CoName + "_MO.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_TG"), os.path.join(TifDirectory, CoName + "_TG.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_CRP"), os.path.join(TifDirectory, CoName + "_CRP.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
+arcpy.CopyRaster_management(os.path.join(Output10mGDB, CoName + "_PAS"), os.path.join(TifDirectory, CoName + "_PAS.tif"),"","0","0","NONE","NONE","8_BIT_UNSIGNED","NONE","NONE","TIFF")
 print("--- Final #7: Final Phase 6 Rasters Complete  %s seconds ---" % (time.time() - start_time))
 
 print("--- All Models Complete %s seconds ---" % (time.time() - ALL_start_time))
