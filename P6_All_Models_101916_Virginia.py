@@ -389,7 +389,7 @@ arcpy.Delete_management(CoName + "_MOTrees")
 
 # FOR 1: Identify Rural Core Areas of Tree Canopy over Pervious Surfaces
 start_time = time.time()
-RLTCP = Int(    SetNull(Con(IsNull(DEV113),1)* TC <=0, Con(IsNull(DEV113),1) * TC)      )
+RLTCP = Int(SetNull(Con(IsNull(DEV113),1)* TC <=0, Con(IsNull(DEV113),1) * TC))
 RLTCP.save(CoName + "_RLTCPTemp")
 arcpy.CopyRaster_management(CoName + "_RLTCPTemp", CoName + "_RLTCP", "","0","0","","","4_BIT","","","","")
 arcpy.Delete_management(CoName + "_RLTCPTemp")
@@ -693,6 +693,10 @@ if arcpy.Exists(WLF):
     WLF2 = Con(Raster(WLF)==1,6)
 if arcpy.Exists(WLO):
     WLO2 = Con(Raster(WLO)==1,7)
+if arcpy.Exists(CRP):
+    CRP2 = Con(Raster(CRP)==1,14)
+if arcpy.Exists(PAS):
+    PAS2 = Con(Raster(PAS)==1,15)
 
 print("--- Final #2 Preprocessing Complete %s seconds ---" % (time.time() - start_time))
 
@@ -724,9 +728,13 @@ if arcpy.Exists(FINR):
     LUlist.append(FINR)
 if arcpy.Exists(TG):
     LUlist.append(TG)
+if arcpy.Exists(CPR2):
+    LUlist.append(CPR2)
+if arcpy.Exists(PAS2):
+    LUlist.append(PAS2)
 for item in LUlist:
-    print(item)
-sys.exit("stop here")
+    arcpy.AddMessage("Adding " + item + " to the stack.")
+
 start_time = time.time()
 rasLocation = CountyDataGDB
 outCellStats = CellStatistics(LUlist, "MINIMUM", "DATA") # LUlist must be used directly as inRasters because it has the correct format needed for CellStatistics, else 000732 error.
