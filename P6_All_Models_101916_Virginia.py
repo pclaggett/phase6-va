@@ -27,9 +27,9 @@ Temp10mGDB = os.path.join("C:/_VA_P6_Landuse", CoName, "Temp", "Temp_10m.gdb")
 TempDirectory = os.path.join("C:/_VA_P6_Landuse", CoName, "Temp")
 
 ## Output
-Output1mGDB = os.path.join("C:/_VA_P6_Landuse", CoName, "Outputs", "Final_1m.gdb")
-Output10mGDB = os.path.join("C:/_VA_P6_Landuse", CoName, "Outputs", "Final_10m.gdb")
-TifDirectory = os.path.join("C:/_VA_P6_Landuse", CoName, "Outputs", "Final_Tifs")
+Output1mGDB = os.path.join("C:/_VA_P6_Landuse", CoName, "Output", "Final_1m.gdb")
+Output10mGDB = os.path.join("C:/_VA_P6_Landuse", CoName, "Output", "Final_10m.gdb")
+TifDirectory = os.path.join("C:/_VA_P6_Landuse", CoName, "Output", "Final_Tiffs")
 
 #### Environments
 arcpy.env.workspace = CountyDataGDB
@@ -607,7 +607,7 @@ else:
     arcpy.Delete_management("in_memory")
     print("--- MO #2a MOspace Complete %s seconds ---" % (time.time() - start_time))
 
-    # MO 2b: Create Herbaceous Layer
+    #  MO2b: Create Herbaceous Layer
     if arcpy.Exists(CoName + "_Herb"):
         HERB = os.path.join(CountyDataGDB, CoName + "_Herb")
         print("Herbaceous Layer Exists")
@@ -752,8 +752,8 @@ for row in rows:
     print (sqlQuery)
     rasExtract = ExtractByAttributes(CountyDataGDB, CoName + "_Mosaic", sqlQuery)
     outCon = Con(IsNull(rasExtract),0,1) # Ag space at 1m
-#    PAS_1 = outCon * PAS
-#    CRP_1 = outCon * CRP
+#   PAS_1 = outCon * PAS
+#   CRP_1 = outCon * CRP
     outAgg = Aggregate(outCon, 10, "SUM", "TRUNCATE", "DATA")
     outAgg.save(os.path.join(Temp10mGDB, CoName + "_" + str(luAbr) + "_10m"))
 outCon2 = Con(IsNull(os.path.join(CountyDataGDB, CoName + "_Mosaic")),1,0)
