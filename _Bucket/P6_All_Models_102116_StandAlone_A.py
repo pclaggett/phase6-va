@@ -712,6 +712,8 @@ arcpy.env.workspace = Temp10GDB
 arcpy.env.scratchWorkspace = Temp10GDB
 arcpy.env.snapRaster = str(Temp10GDB) + str(CoName) + "_Snap"
 arcpy.env.extent = str(Temp10GDB) + str(CoName) + "_Snap"
+
+
 arcpy.Delete_management(str(TempDirectory), str(CoName) + "_LuTable.dbf")
 arcpy.TableToTable_conversion(str(CoGDB) + str(CoName) + "_Mosaic", str(TempDirectory), str(CoName) + "_LuTable")
 LuTable = os.path.join(str(TempDirectory), str(CoName) + "_LuTable.dbf")
